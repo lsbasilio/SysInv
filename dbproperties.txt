@@ -1,0 +1,2 @@
+dblocation=C:\SysInv\Dados\InventarioBD.db
+user=Leandro

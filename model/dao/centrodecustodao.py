@@ -1,10 +1,12 @@
 import sqlite3
+from db.db import Db
 
 
 class CentroDeCustoDao:
 
     def __init__(self):
-        self.banco = sqlite3.connect(r'C:\SysInv\Dados\InventarioBD.db')
+        self._db = Db()
+        self.banco = self._db.get_connection()
 
     def delete_all(self):
         cursor = self.banco.cursor()

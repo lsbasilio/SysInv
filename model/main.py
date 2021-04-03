@@ -5,6 +5,8 @@ from model.entities.descrpadrao import DescrPadrao
 from model.entities.descrcomplementar import DescrComplementar
 from model.entities.bens import Bens
 
+from db.db import Db
+
 import csv
 import pandas as pd
 import xlrd as excel
@@ -26,8 +28,9 @@ print(bens.get_numero_bem())
 
 # Carga a partir de arquivo Csv
 teste = 'TESTE1;TESTE2'
-#ccusto.carrega_ccusto_csv(r'C:\SysInv\Dados\Carga\CentroCustodddd.csv')
-ccusto.carrega_ccusto_excel(r'C:\SysInv\Dados\Carga\Inventario.xlsx', 'CentroCusto')
+# print(Db.load_properties())
+ccusto.carrega_ccusto_csv(r'C:\SysInv\Dados\Carga\CentroCusto.csv')
+#ccusto.carrega_ccusto_excel(r'C:\SysInv\Dados\Carga\Inventario.xlsx', 'CentroCusto')
 # with open('C:\SysInv\Dados\Carga\CentroCusto.csv') as csvfile:
 #     registro = csv.reader(csvfile, delimiter=';')
 #     for row in registro:
@@ -66,3 +69,18 @@ ccusto.carrega_ccusto_excel(r'C:\SysInv\Dados\Carga\Inventario.xlsx', 'CentroCus
 # ccusto.set_ccusto_id(350)
 # ccusto.set_descricao('TESTANDO')
 # centrodao.insert(ccusto)
+
+
+def load_properties(propriedade):
+    arquivodb = open('C:\dev\SysInv\dbproperties.txt', 'r')
+    texto = arquivodb.readline()
+    #print('texto:', "'" + texto.replace("\n",'') + "'")
+    print('texto:', "'" + texto.replace('\n',''))
+    for line in arquivodb.readlines():
+        str = line.split('=')
+        if propriedade == str[0]:
+            return str[1]
+
+
+
+print(load_properties('dblocation'))

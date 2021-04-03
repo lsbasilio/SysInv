@@ -80,9 +80,6 @@ class CentroDeCusto:
     def carrega_ccusto_csv(self, path):
         try:
 
-            # if not os.path.exists(path):
-            #     raise ValueError(f'O arquivo CSV informado: {path} não existe!')
-
             with open(path) as csvfile:
                 registro = csv.reader(csvfile, delimiter=';')
 

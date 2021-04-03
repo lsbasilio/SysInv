@@ -17,3 +17,5 @@ class Locais:
 
     def set_descricao(self, valor):
         self._descricao = valor
+
+    ##### Métodos #####
