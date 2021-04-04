@@ -2,23 +2,23 @@ import sqlite3
 from db.db import Db
 import csv
 import pandas as pd
-from model.entities.centrodecusto import CentroDeCusto
+from model.entities.locais import Locais
 
-class CentroDeCustoDao:
+class LocaisDao:
 
     def __init__(self):
         self._db = Db()
         self._banco = self._db.get_connection()
-        self.ccusto = CentroDeCusto()
+        self.locais = Locais()
 
     def delete_all(self):
         cursor = self._banco.cursor()
 
         try:
-            str_sql = 'DELETE FROM centrodecusto'
+            str_sql = 'DELETE FROM locais'
             cursor.execute(str_sql)
         except sqlite3.Error as erro:
-            raise ValueError('Erro ao excluir todos os Centros de Custo: ', erro)
+            raise ValueError('Erro ao excluir todos os Locais: ', erro)
         finally:
             self._banco.commit()
 
@@ -27,17 +27,17 @@ class CentroDeCustoDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = "INSERT INTO centrodecusto "
-            str_sql += "(Ccusto_id,Descricao,Status,Data_Inicio,Data_Fim,Pendentes,Inventariados,Novos)"
+            str_sql = "INSERT INTO locais "
+            str_sql += "(Local_id,Descricao)"
             str_sql += " VALUES "
-            str_sql += f"({obj.get_ccusto_id()},'{obj.get_descricao()}',{obj.get_status()},'{obj.get_data_inicio()}','{obj.get_data_fim()}',{obj.get_pendentes()},{obj.get_inventariados()},{obj.get_novos()})"
+            str_sql += f"({obj.get_local_id()},'{obj.get_descricao()}')"
 
             cursor.execute(str_sql)
 
         except sqlite3.Error as erro:
-            raise ValueError('Erro ao inserir o Centro de Custo: ', erro)
+            raise ValueError('Erro ao inserir o Local: ', erro)
 
-    def carrega_ccusto_csv(self, path):
+    def carrega_local_csv(self, path):
         try:
 
             with open(path) as csvfile:
@@ -46,20 +46,20 @@ class CentroDeCustoDao:
                 self.delete_all()
 
                 for row in registro:
-                    self.ccusto.set_ccusto_id(int(row[0]))
-                    self.ccusto.set_descricao(row[1])
-                    self.insert(self.ccusto)
+                    self.locais.set_local_id(int(row[0]))
+                    self.locais.set_descricao(row[1])
+                    self.insert(self.locais)
 
                 csvfile.close()
 
         except FileNotFoundError:
             raise ValueError(f'O arquivo CSV informado: {path} não existe!')
         except csv.Error as e:
-            print(f'Erro na Importação do Centro de Custo: {path}, Linha: {registro.line_num} : {e}')
+            print(f'Erro na Importação dos Locais: {path}, Linha: {registro.line_num} : {e}')
         finally:
             self._banco.commit()
 
-    def carrega_ccusto_excel(self, path, nome_aba=''):
+    def carrega_local_excel(self, path, nome_aba=''):
         try:
 
             if nome_aba == '':
@@ -76,9 +76,9 @@ class CentroDeCustoDao:
 
             i = 0
             for codigo in lista_codigos:
-                self.ccusto.set_ccusto_id(codigo)
-                self.ccusto.set_descricao(lista_descricoes[i])
-                self.insert(self.ccusto)
+                self.locais.set_local_id(codigo)
+                self.locais.set_descricao(lista_descricoes[i])
+                self.insert(self.locais)
                 i += 1
 
         except FileNotFoundError:

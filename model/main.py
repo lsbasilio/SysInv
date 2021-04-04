@@ -4,6 +4,9 @@ from model.entities.locais import Locais
 from model.entities.descrpadrao import DescrPadrao
 from model.entities.descrcomplementar import DescrComplementar
 from model.entities.bens import Bens
+from model.dao.locaisdao import LocaisDao
+
+import os.path as file
 
 from db.db import Db
 
@@ -11,8 +14,9 @@ import csv
 import pandas as pd
 import xlrd as excel
 
-ccusto = CentroDeCusto()
-print(ccusto.get_ccusto_id())
+ccusto = CentroDeCustoDao()
+locaisdao = LocaisDao()
+#print(ccusto.get_ccusto_id())
 
 locais = Locais()
 print(locais.get_local_id())
@@ -29,8 +33,10 @@ print(bens.get_numero_bem())
 # Carga a partir de arquivo Csv
 teste = 'TESTE1;TESTE2'
 # print(Db.load_properties())
-ccusto.carrega_ccusto_csv(r'C:\SysInv\Dados\Carga\CentroCusto.csv')
-#ccusto.carrega_ccusto_excel(r'C:\SysInv\Dados\Carga\Inventario.xlsx', 'CentroCusto')
+locaisdao.carrega_local_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Local')
+#locaisdao.carrega_local_csv(r'C:\SysInv\Dados\Carga\Locais.csv')
+#ccusto.carrega_ccusto_csv(r'C:\SysInv\Dados\Carga\Locais.csv')
+#ccusto.carrega_ccusto_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'CentroCusto')
 # with open('C:\SysInv\Dados\Carga\CentroCusto.csv') as csvfile:
 #     registro = csv.reader(csvfile, delimiter=';')
 #     for row in registro:
@@ -82,5 +88,20 @@ def load_properties(propriedade):
             return str[1]
 
 
+def ler_linhas_arquivo(propriedade):
+    arquivodb = open('..\dbproperties.txt', 'r')   # 'C:\dev\SysInv\dbproperties.txt'
+    for linha in arquivodb:
+        str = linha.split('=')
+        if propriedade == str[0]:
+            return "'" + str[1].rstrip('\n') + "'"
+    arquivodb.close()
 
-print(load_properties('dblocation'))
+
+print(ler_linhas_arquivo('dblocation'))
+# print(load_properties('dblocation'))
+
+#arquivodb = open('dbproperties.txt', 'r')
+
+print(__file__)
+print(file.abspath(__file__))
+print(file.dirname(file.abspath('C:\dev\SysInv\model\main.py')))
