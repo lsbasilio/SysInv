@@ -7,10 +7,22 @@ class Db:
         self._conn = None
 
     def get_connection(self):
-        if self._conn == None:
-            self._conn = sqlite3.connect(self._load_properties('dblocation'))
+        try:
+            if self._conn is None:
+                self._conn = sqlite3.connect(self._load_properties('dblocation'))
 
-        return self._conn
+            return self._conn
+
+        except sqlite3.Error as erro:
+            print('Erro ao conectar ao Banco: ', erro)
+
+    def close_connection(self):
+        try:
+            if self._conn is not None:
+                self._conn.close()
+
+        except sqlite3.Error as erro:
+            print('Erro ao fechar a conexão com o Banco: ', erro)
 
     @staticmethod
     def _load_properties(propriedade):

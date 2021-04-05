@@ -4,6 +4,7 @@ import csv
 import pandas as pd
 from model.entities.centrodecusto import CentroDeCusto
 
+
 class CentroDeCustoDao:
 
     def __init__(self):
@@ -63,9 +64,9 @@ class CentroDeCustoDao:
         try:
 
             if nome_aba == '':
-                planilha = pd.read_excel(path)
+                planilha = pd.read_excel(path, na_filter=False)
             else:
-                planilha = pd.read_excel(path, sheet_name=nome_aba)
+                planilha = pd.read_excel(path, sheet_name=nome_aba, na_filter=False)
 
             self.delete_all()
 

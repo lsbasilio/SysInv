@@ -7,6 +7,7 @@ from model.entities.bens import Bens
 from model.dao.locaisdao import LocaisDao
 from model.dao.descrpadraodao import DescrPadraoDao
 from model.dao.descrcomplementardao import DescrComplementarDao
+from model.dao.bensdao import BensDao
 
 import os.path as file
 
@@ -29,20 +30,21 @@ descrpadraodao = DescrPadraoDao()
 descrcomplementardao = DescrComplementarDao()
 #print(descrcomplementar.get_descricao_id())
 
-bens = Bens()
-print(bens.get_numero_bem())
+bens = BensDao()
+#print(bens.get_numero_bem())
 
 # Carga a partir de arquivo Csv
 teste = 'TESTE1;TESTE2'
 # print(Db.load_properties())
 #descrpadraodao.carrega_descrpadrao_csv(r'C:\SysInv\Dados\Carga\DescrPadrao.csv')
 #descrcomplementardao.carrega_descrcomplementar_csv(r'C:\SysInv\Dados\Carga\DescrCompl.csv')
-descrcomplementardao.carrega_descrcomplementar_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Descr.Compl')
+#descrcomplementardao.carrega_descrcomplementar_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Descr.Compl')
 #descrpadraodao.carrega_descrpadrao_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Descr.Padrao')
 #locaisdao.carrega_local_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Local')
 #locaisdao.carrega_local_csv(r'C:\SysInv\Dados\Carga\Locais.csv')
 #ccusto.carrega_ccusto_csv(r'C:\SysInv\Dados\Carga\Locais.csv')
-#ccusto.carrega_ccusto_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'CentroCusto')
+#bens.carrega_bens_csv(r'C:\SysInv\Dados\Carga\Bens.csv')
+bens.carrega_bens_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Bens')
 # with open('C:\SysInv\Dados\Carga\CentroCusto.csv') as csvfile:
 #     registro = csv.reader(csvfile, delimiter=';')
 #     for row in registro:
