@@ -65,7 +65,7 @@ class LocaisDao:
             if nome_aba == '':
                 planilha = pd.read_excel(path)
             else:
-                planilha = pd.read_excel(path, sheet_name = nome_aba)
+                planilha = pd.read_excel(path, sheet_name=nome_aba)
 
             self.delete_all()
 
