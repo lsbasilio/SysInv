@@ -3,7 +3,7 @@ from db.db import Db
 import csv
 import pandas as pd
 from model.entities.bens import Bens
-import numpy as np
+from model.dao.centrodecustodao import CentroDeCustoDao
 
 class BensDao:
 
@@ -11,6 +11,7 @@ class BensDao:
         self._db = Db()
         self._banco = self._db.get_connection()
         self.bens = Bens()
+        self.CcustoDao = CentroDeCustoDao()
 
     def delete_all(self):
         cursor = self._banco.cursor()
@@ -85,6 +86,9 @@ class BensDao:
                 # Salvando os campos originais na tabela de Bens
                 self.salvar_campos_originais()
 
+                # Atualizando os Bens pendentes de todos os Centro de Custo
+                self.CcustoDao.update_bens_pendentes()
+
                 csvfile.close()
 
         except FileNotFoundError:
@@ -132,6 +136,9 @@ class BensDao:
 
             # Salvando os campos originais na tabela de Bens
             self.salvar_campos_originais()
+
+            # Atualizando os Bens pendentes de todos os Centro de Custo
+            self.CcustoDao.update_bens_pendentes()
 
         except FileNotFoundError:
             raise ValueError(f'O arquivo Excel informado: {path} não existe!')

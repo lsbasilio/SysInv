@@ -42,7 +42,8 @@ teste = 'TESTE1;TESTE2'
 #descrpadraodao.carrega_descrpadrao_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Descr.Padrao')
 #locaisdao.carrega_local_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Local')
 #locaisdao.carrega_local_csv(r'C:\SysInv\Dados\Carga\Locais.csv')
-#ccusto.carrega_ccusto_csv(r'C:\SysInv\Dados\Carga\Locais.csv')
+#ccusto.carrega_ccusto_csv(r'C:\SysInv\Dados\Carga\CentroCusto.csv')
+#ccusto.update_bens_pendentes()
 #bens.carrega_bens_csv(r'C:\SysInv\Dados\Carga\Bens.csv')
 bens.carrega_bens_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Bens')
 # with open('C:\SysInv\Dados\Carga\CentroCusto.csv') as csvfile:
@@ -113,3 +114,9 @@ print(ler_linhas_arquivo('dblocation'))
 print(__file__)
 print(file.abspath(__file__))
 print(file.dirname(file.abspath('C:\dev\SysInv\model\main.py')))
+
+dict = {'Leandro': 30}
+print(dict['Leandro'])
+dict2 = {2250: 40}
+dict2[2250] = dict2[2250] + 1
+print(dict2[2250])

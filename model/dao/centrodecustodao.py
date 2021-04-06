@@ -38,6 +38,24 @@ class CentroDeCustoDao:
         except sqlite3.Error as erro:
             raise ValueError('Erro ao inserir o Centro de Custo: ', erro)
 
+    def update_bens_pendentes(self):
+
+        cursor_update = self._banco.cursor()
+        cursor_ccusto = self._banco.cursor()
+
+        try:
+            cursor_ccusto.execute('SELECT Ccusto_Id FROM centrodecusto')
+
+            for row in cursor_ccusto:
+                str_sql = "UPDATE centrodecusto SET Pendentes = (SELECT COUNT(*) FROM bens WHERE Ccusto_Id = " \
+                          f"{row[0]}) WHERE Ccusto_Id = {row[0]}"
+                cursor_update.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao excluir todos os Centros de Custo: ', erro)
+        finally:
+            self._banco.commit()
+
     def carrega_ccusto_csv(self, path):
         try:
 
