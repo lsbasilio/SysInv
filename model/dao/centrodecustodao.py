@@ -37,6 +37,8 @@ class CentroDeCustoDao:
 
         except sqlite3.Error as erro:
             raise ValueError('Erro ao inserir o Centro de Custo: ', erro)
+        finally:
+            self._banco.commit()
 
     def update_bens_pendentes(self):
 
@@ -75,8 +77,8 @@ class CentroDeCustoDao:
             raise ValueError(f'O arquivo CSV informado: {path} não existe!')
         except csv.Error as e:
             print(f'Erro na Importação do Centro de Custo: {path}, Linha: {registro.line_num} : {e}')
-        finally:
-            self._banco.commit()
+        # finally:
+        #     self._banco.commit()
 
     def carrega_ccusto_excel(self, path, nome_aba=''):
         try:
@@ -102,5 +104,5 @@ class CentroDeCustoDao:
 
         except FileNotFoundError:
             raise ValueError(f'O arquivo Excel informado: {path} não existe!')
-        finally:
-            self._banco.commit()
+        # finally:
+        #     self._banco.commit()

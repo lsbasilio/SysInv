@@ -42,6 +42,8 @@ class BensDao:
 
         except sqlite3.Error as erro:
             raise ValueError('Erro ao inserir os Bens: ', erro)
+        finally:
+            self._banco.commit()
 
     def salvar_campos_originais(self):
 
@@ -95,8 +97,8 @@ class BensDao:
             raise ValueError(f'O arquivo CSV informado: {path} não existe!')
         except csv.Error as e:
             print(f'Erro na Importação do Centro de Custo: {path}, Linha: {registro.line_num} : {e}')
-        finally:
-            self._banco.commit()
+        # finally:
+        #     self._banco.commit()
 
     def carrega_bens_excel(self, path, nome_aba=''):
         try:
@@ -142,5 +144,5 @@ class BensDao:
 
         except FileNotFoundError:
             raise ValueError(f'O arquivo Excel informado: {path} não existe!')
-        finally:
-            self._banco.commit()
+        # finally:
+        #     self._banco.commit()

@@ -36,6 +36,85 @@ class LocaisDao:
 
         except sqlite3.Error as erro:
             raise ValueError('Erro ao inserir o Local: ', erro)
+        finally:
+            self._banco.commit()
+
+    def update(self, obj):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = "UPDATE locais "
+            str_sql += f"SET Descricao = '{obj.get_descricao()}' "
+            str_sql += f"WHERE Local_id = {obj.get_local_id()}"
+
+            cursor.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao atualizar o Local: ', erro)
+        finally:
+            self._banco.commit()
+
+    def delete_by_id(self, id):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"DELETE FROM locais WHERE Local_id = {id}"
+
+            cursor.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao excluir o Local: ', erro)
+        finally:
+            self._banco.commit()
+
+    def find_by_id(self, id):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"SELECT Local_Id,Descricao FROM locais" \
+                      f" WHERE Local_id = {id}"
+
+            cursor.execute(str_sql)
+
+            lista = cursor.fetchall()
+
+            if len(lista) > 0:
+                return self.instantiate_local(lista[0])
+
+            return None
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao excluir o Local: ', erro)
+
+    def find_all(self):
+
+        lista = []
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = "SELECT * FROM locais ORDER BY Descricao"
+
+            cursor.execute(str_sql)
+
+            lista_locais = cursor.fetchall()
+
+            for row in lista_locais:
+                lista.append(self.instantiate_local(row)) # Lista com os objetos de Local
+
+            return lista
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao excluir o Local: ', erro)
+
+    def instantiate_local(self, lista):
+        self.locais_temp = Locais()
+        self.locais_temp.set_local_id(lista[0])
+        self.locais_temp.set_descricao(lista[1])
+        return self.locais_temp
 
     def carrega_local_csv(self, path):
         try:
@@ -56,8 +135,8 @@ class LocaisDao:
             raise ValueError(f'O arquivo CSV informado: {path} não existe!')
         except csv.Error as e:
             print(f'Erro na Importação dos Locais: {path}, Linha: {registro.line_num} : {e}')
-        finally:
-            self._banco.commit()
+        # finally:
+        #     self._banco.commit()
 
     def carrega_local_excel(self, path, nome_aba=''):
         try:
@@ -83,5 +162,5 @@ class LocaisDao:
 
         except FileNotFoundError:
             raise ValueError(f'O arquivo Excel informado: {path} não existe!')
-        finally:
-            self._banco.commit()
+        # finally:
+        #     self._banco.commit()

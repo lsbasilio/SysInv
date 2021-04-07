@@ -35,6 +35,18 @@ bens = BensDao()
 
 # Carga a partir de arquivo Csv
 teste = 'TESTE1;TESTE2'
+#locais = locaisdao.find_all()
+lista_locais = locaisdao.find_all()
+for local in lista_locais:
+    print(local.get_local_id(), local.get_descricao())
+# locais = locaisdao.find_by_id(1230)
+# if locais is not None:
+#  print('Local:', locais.get_local_id())
+#  print('DescrLocal:', locais.get_descricao())
+# locais.set_local_id(1010)
+# locais.set_descricao('TESTE')
+#locaisdao.delete_by_id(locais.get_local_id())
+#locaisdao.update(locais)
 # print(Db.load_properties())
 #descrpadraodao.carrega_descrpadrao_csv(r'C:\SysInv\Dados\Carga\DescrPadrao.csv')
 #descrcomplementardao.carrega_descrcomplementar_csv(r'C:\SysInv\Dados\Carga\DescrCompl.csv')
@@ -43,9 +55,10 @@ teste = 'TESTE1;TESTE2'
 #locaisdao.carrega_local_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Local')
 #locaisdao.carrega_local_csv(r'C:\SysInv\Dados\Carga\Locais.csv')
 #ccusto.carrega_ccusto_csv(r'C:\SysInv\Dados\Carga\CentroCusto.csv')
+#ccusto.carrega_ccusto_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'CentroCusto')
 #ccusto.update_bens_pendentes()
 #bens.carrega_bens_csv(r'C:\SysInv\Dados\Carga\Bens.csv')
-bens.carrega_bens_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Bens')
+#bens.carrega_bens_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Bens')
 # with open('C:\SysInv\Dados\Carga\CentroCusto.csv') as csvfile:
 #     registro = csv.reader(csvfile, delimiter=';')
 #     for row in registro:
