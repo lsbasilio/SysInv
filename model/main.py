@@ -17,7 +17,19 @@ import csv
 import pandas as pd
 import xlrd as excel
 
-ccusto = CentroDeCustoDao()
+ccustodao = CentroDeCustoDao()
+ccusto = CentroDeCusto()
+# lista_ccusto = ccustodao.find_all()
+# for ccusto in lista_ccusto:
+#     print(ccusto.get_ccusto_id(), ccusto.get_descricao(),ccusto.get_status(),ccusto.get_pendentes())
+# ccusto = ccustodao.find_by_id(308000)
+# if ccusto is not None:
+#     print(ccusto.get_ccusto_id(),ccusto.get_descricao(),ccusto.get_status(),ccusto.get_pendentes())
+ccusto.set_ccusto_id(300000)
+ccusto.set_descricao('TESTE')
+ccustodao.delete_by_id(ccusto.get_ccusto_id())
+#ccustodao.update(ccusto)
+
 locaisdao = LocaisDao()
 #print(ccusto.get_ccusto_id())
 
@@ -25,27 +37,70 @@ locais = Locais()
 print(locais.get_local_id())
 
 descrpadraodao = DescrPadraoDao()
+# descrpadrao = descrpadraodao.find_by_id('VPD')
+# if descrpadrao is not None:
+#  print('Descr_Id:', descrpadrao.get_descricao_id())
+#  print('DescrPadrao:', descrpadrao.get_descricao())
 #print(descrpadrao.get_descricao_id())
+# lista_descrpadrao = descrpadraodao.find_all()
+# for descr in lista_descrpadrao:
+#     print(descr.get_descricao_id(), descr.get_descricao())
+# descpadrao = DescrPadrao()
+# descpadrao.set_descricao_id('ABAF')
+# descpadrao.set_descricao('ARMARIO DE ACO INOX')
+# descrpadraodao.delete_by_id(descpadrao.get_descricao_id())
 
-descrcomplementardao = DescrComplementarDao()
+# descrcomplementardao = DescrComplementarDao()
+# #descrcomplementar = DescrComplementar()
+# lista_descrs = descrcomplementardao.find_all()
+# for descr in lista_descrs:
+#     print(descr.get_descricao_id(), descr.get_descricao())
+# descrcomplementar = descrcomplementardao.find_by_id('ARM')
+# print(descrcomplementar.get_descricao_id(),descrcomplementar.get_descricao())
+# descrcomplementar.set_descricao_id('MOG')
+# descrcomplementar.set_descricao('TESTANDO')
+# descrcomplementardao.update(descrcomplementar)
+# descrcomplementardao.delete_by_id('MAD')
 #print(descrcomplementar.get_descricao_id())
 
-bens = BensDao()
+bensdao = BensDao()
 #print(bens.get_numero_bem())
-
+bens = Bens()
+lista_bens = bensdao.find_all()
+for bens in lista_bens:
+    print(bens.get_numero_bem(),bens.get_ccusto_id(),bens.get_descricao(),bens.get_marca(),bens.get_modelo(),bens.get_numeroserie())
+# bens = bensdao.find_by_id(500)
+# if bens is not None:
+#     print(bens.get_numero_bem(),bens.get_ccusto_id(),bens.get_descricao(),bens.get_marca(),bens.get_modelo(),bens.get_numeroserie())
+#bens.set_numero_bem(181)
+# bens.set_ccusto_id(205000)
+# bens.set_status(2)
+# bens.set_data_inv('08/04/2021')
+# bens.set_conta(666)
+# bens.set_data('05/04/2005')
+# bens.set_observacao('TESTANDO A OBSERVAÇÃO')
+# bens.set_local_id(1220)
+# bens.set_usuario('LEANDRO')
+# bens.set_descricao('TESTANDO A DESCRIÇÃO')
+# bens.set_marca('MARCA')
+# bens.set_modelo('MODELO')
+# bens.set_numeroserie('NUMSERIE')
+# bens.set_situacao('SITUAÇÃO')
+#bensdao.delete_by_id(1161)
+#bensdao.update(bens)
 # Carga a partir de arquivo Csv
 teste = 'TESTE1;TESTE2'
 #locais = locaisdao.find_all()
-lista_locais = locaisdao.find_all()
-for local in lista_locais:
-    print(local.get_local_id(), local.get_descricao())
+# lista_locais = locaisdao.find_all()
+# for local in lista_locais:
+#     print(local.get_local_id(), local.get_descricao())
 # locais = locaisdao.find_by_id(1230)
 # if locais is not None:
 #  print('Local:', locais.get_local_id())
 #  print('DescrLocal:', locais.get_descricao())
-# locais.set_local_id(1010)
+# locais.set_local_id(1213)
 # locais.set_descricao('TESTE')
-#locaisdao.delete_by_id(locais.get_local_id())
+# locaisdao.delete_by_id(locais.get_local_id())
 #locaisdao.update(locais)
 # print(Db.load_properties())
 #descrpadraodao.carrega_descrpadrao_csv(r'C:\SysInv\Dados\Carga\DescrPadrao.csv')

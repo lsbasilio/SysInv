@@ -7,6 +7,8 @@ from model.entities.centrodecusto import CentroDeCusto
 
 class CentroDeCustoDao:
 
+    _nome_tabela = 'centrodecusto'
+
     def __init__(self):
         self._db = Db()
         self._banco = self._db.get_connection()
@@ -16,7 +18,7 @@ class CentroDeCustoDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = 'DELETE FROM centrodecusto'
+            str_sql = f'DELETE FROM {self._nome_tabela}'
             cursor.execute(str_sql)
         except sqlite3.Error as erro:
             raise ValueError('Erro ao excluir todos os Centros de Custo: ', erro)
@@ -28,7 +30,7 @@ class CentroDeCustoDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = "INSERT INTO centrodecusto "
+            str_sql = f"INSERT INTO {self._nome_tabela} "
             str_sql += "(Ccusto_id,Descricao,Status,Data_Inicio,Data_Fim,Pendentes,Inventariados,Novos)"
             str_sql += " VALUES "
             str_sql += f"({obj.get_ccusto_id()},'{obj.get_descricao()}',{obj.get_status()},'{obj.get_data_inicio()}','{obj.get_data_fim()}',{obj.get_pendentes()},{obj.get_inventariados()},{obj.get_novos()})"
@@ -46,17 +48,106 @@ class CentroDeCustoDao:
         cursor_ccusto = self._banco.cursor()
 
         try:
-            cursor_ccusto.execute('SELECT Ccusto_Id FROM centrodecusto')
+            cursor_ccusto.execute(f'SELECT Ccusto_Id FROM {self._nome_tabela}')
 
             for row in cursor_ccusto:
-                str_sql = "UPDATE centrodecusto SET Pendentes = (SELECT COUNT(*) FROM bens WHERE Ccusto_Id = " \
+                str_sql = f"UPDATE {self._nome_tabela} SET Pendentes = (SELECT COUNT(*) FROM bens WHERE Ccusto_Id = " \
                           f"{row[0]}) WHERE Ccusto_Id = {row[0]}"
                 cursor_update.execute(str_sql)
 
         except sqlite3.Error as erro:
-            raise ValueError('Erro ao excluir todos os Centros de Custo: ', erro)
+            raise ValueError('Erro ao atualizar os Bens Pendentes dos Centros de Custo: ', erro)
         finally:
             self._banco.commit()
+
+    def update(self, obj):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"UPDATE {self._nome_tabela} "
+            str_sql += f"SET Descricao = '{obj.get_descricao()}', "
+            str_sql += f"Status = {obj.get_status()}, "
+            str_sql += f"Data_Inicio = '{obj.get_data_inicio()}', "
+            str_sql += f"Data_Fim = '{obj.get_data_fim()}', "
+            str_sql += f"Pendentes = {obj.get_pendentes()}, "
+            str_sql += f"Inventariados = {obj.get_inventariados()}, "
+            str_sql += f"Novos = {obj.get_novos()} "
+            str_sql += f"WHERE Ccusto_id = {obj.get_ccusto_id()}"
+
+            cursor.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao atualizar o Centro de Custo: ', erro)
+        finally:
+            self._banco.commit()
+
+    def delete_by_id(self, id):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"DELETE FROM {self._nome_tabela} WHERE Ccusto_id = {id}"
+
+            cursor.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao excluir o Centro de Custo: ', erro)
+        finally:
+            self._banco.commit()
+
+    def find_by_id(self, id):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"SELECT * FROM {self._nome_tabela} " \
+                      f"WHERE Ccusto_id = {id}"
+
+            cursor.execute(str_sql)
+
+            lista = cursor.fetchall()
+
+            if len(lista) > 0:
+                return self.instantiate_ccusto(lista[0])
+
+            return None
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao encontrar o Local: ', erro)
+
+    def find_all(self):
+
+        lista = []
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"SELECT * FROM {self._nome_tabela} ORDER BY Descricao"
+
+            cursor.execute(str_sql)
+
+            lista_ccustos = cursor.fetchall()
+
+            for row in lista_ccustos:
+                lista.append(self.instantiate_ccusto(row)) # Lista com os objetos de Centro de Custo
+
+            return lista
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao encontrar todos os Centro de Custo: ', erro)
+
+    def instantiate_ccusto(self, lista):
+        self.ccustos_temp = CentroDeCusto()
+        self.ccustos_temp.set_ccusto_id(int(lista[0]))
+        self.ccustos_temp.set_descricao(lista[1])
+        self.ccustos_temp.set_status(int(lista[2]))
+        self.ccustos_temp.set_data_inicio(lista[3])
+        self.ccustos_temp.set_data_fim(lista[4])
+        self.ccustos_temp.set_pendentes(int(lista[5]))
+        self.ccustos_temp.set_inventariados(int(lista[6]))
+        self.ccustos_temp.set_novos(int(lista[7]))
+        return self.ccustos_temp
 
     def carrega_ccusto_csv(self, path):
         try:

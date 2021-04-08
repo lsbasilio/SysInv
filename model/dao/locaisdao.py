@@ -6,6 +6,8 @@ from model.entities.locais import Locais
 
 class LocaisDao:
 
+    _nome_tabela = 'locais'
+
     def __init__(self):
         self._db = Db()
         self._banco = self._db.get_connection()
@@ -15,7 +17,7 @@ class LocaisDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = 'DELETE FROM locais'
+            str_sql = f'DELETE FROM {self._nome_tabela}'
             cursor.execute(str_sql)
         except sqlite3.Error as erro:
             raise ValueError('Erro ao excluir todos os Locais: ', erro)
@@ -27,7 +29,7 @@ class LocaisDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = "INSERT INTO locais "
+            str_sql = f"INSERT INTO {self._nome_tabela} "
             str_sql += "(Local_id,Descricao)"
             str_sql += " VALUES "
             str_sql += f"({obj.get_local_id()},'{obj.get_descricao()}')"
@@ -44,7 +46,7 @@ class LocaisDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = "UPDATE locais "
+            str_sql = f"UPDATE {self._nome_tabela} "
             str_sql += f"SET Descricao = '{obj.get_descricao()}' "
             str_sql += f"WHERE Local_id = {obj.get_local_id()}"
 
@@ -60,7 +62,7 @@ class LocaisDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = f"DELETE FROM locais WHERE Local_id = {id}"
+            str_sql = f"DELETE FROM {self._nome_tabela} WHERE Local_id = {id}"
 
             cursor.execute(str_sql)
 
@@ -74,8 +76,8 @@ class LocaisDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = f"SELECT Local_Id,Descricao FROM locais" \
-                      f" WHERE Local_id = {id}"
+            str_sql = f"SELECT Local_Id,Descricao FROM {self._nome_tabela} " \
+                      f"WHERE Local_id = {id}"
 
             cursor.execute(str_sql)
 
@@ -87,7 +89,7 @@ class LocaisDao:
             return None
 
         except sqlite3.Error as erro:
-            raise ValueError('Erro ao excluir o Local: ', erro)
+            raise ValueError('Erro ao encontrar o Local: ', erro)
 
     def find_all(self):
 
@@ -96,7 +98,7 @@ class LocaisDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = "SELECT * FROM locais ORDER BY Descricao"
+            str_sql = f"SELECT * FROM {self._nome_tabela} ORDER BY Descricao"
 
             cursor.execute(str_sql)
 
@@ -108,7 +110,7 @@ class LocaisDao:
             return lista
 
         except sqlite3.Error as erro:
-            raise ValueError('Erro ao excluir o Local: ', erro)
+            raise ValueError('Erro ao encontrar todos os Locais: ', erro)
 
     def instantiate_local(self, lista):
         self.locais_temp = Locais()

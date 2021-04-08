@@ -5,6 +5,9 @@ import pandas as pd
 from model.entities.descrcomplementar import DescrComplementar
 
 class DescrComplementarDao:
+
+    _nome_tabela = 'descrcomplementar'
+
     def __init__(self):
         self._db = Db()
         self._banco = self._db.get_connection()
@@ -15,7 +18,7 @@ class DescrComplementarDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = 'DELETE FROM descrcomplementar'
+            str_sql = f'DELETE FROM {self._nome_tabela}'
             cursor.execute(str_sql)
         except sqlite3.Error as erro:
             raise ValueError('Erro ao excluir todas as Descricões Complementares: ', erro)
@@ -27,7 +30,7 @@ class DescrComplementarDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = "INSERT INTO descrcomplementar "
+            str_sql = f"INSERT INTO {self._nome_tabela} "
             str_sql += "(Descricao_id,Descricao)"
             str_sql += " VALUES "
             str_sql += f"('{obj.get_descricao_id()}','{obj.get_descricao()}')"
@@ -35,9 +38,86 @@ class DescrComplementarDao:
             cursor.execute(str_sql)
 
         except sqlite3.Error as erro:
-            raise ValueError('Erro ao inserir a descrição padrão: ', erro)
+            raise ValueError('Erro ao inserir a descrição complementar: ', erro)
         finally:
             self._banco.commit()
+
+    def update(self, obj):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"UPDATE {self._nome_tabela} "
+            str_sql += f"SET Descricao = '{obj.get_descricao()}' "
+            str_sql += f"WHERE Descricao_id = '{obj.get_descricao_id()}'"
+
+            cursor.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao atualizar a Descrição Complementar: ', erro)
+        finally:
+            self._banco.commit()
+
+    def delete_by_id(self, id):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"DELETE FROM {self._nome_tabela} WHERE descricao_id = '{id}'"
+
+            cursor.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao excluir a Descrição Complementar: ', erro)
+        finally:
+            self._banco.commit()
+
+    def find_by_id(self, id):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"SELECT Descricao_Id,Descricao FROM {self._nome_tabela}" \
+                      f" WHERE Descricao_id = '{id}'"
+
+            cursor.execute(str_sql)
+
+            lista = cursor.fetchall()
+
+            if len(lista) > 0:
+                return self.instantiate_descrcomplementar(lista[0])
+
+            return None
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao encontrar a Descrição Complementar: ', erro)
+
+    def find_all(self):
+
+        lista = []
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"SELECT * FROM {self._nome_tabela} ORDER BY Descricao_Id"
+
+            cursor.execute(str_sql)
+
+            lista_descrcomplementar = cursor.fetchall()
+
+            for row in lista_descrcomplementar:
+                lista.append(self.instantiate_descrcomplementar(row)) # Lista com os objetos de Descr Padrão
+
+            return lista
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao encontrar todos as Descrições COmplementares: ', erro)
+
+    def instantiate_descrcomplementar(self, lista):
+        self.descrcomplementar_temp = DescrComplementar()
+        self.descrcomplementar_temp.set_descricao_id(lista[0])
+        self.descrcomplementar_temp.set_descricao(lista[1])
+        return self.descrcomplementar_temp
 
     def carrega_descrcomplementar_csv(self, path):
         try:

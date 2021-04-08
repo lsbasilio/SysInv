@@ -7,6 +7,8 @@ from model.dao.centrodecustodao import CentroDeCustoDao
 
 class BensDao:
 
+    _nome_tabela = 'bens'
+
     def __init__(self):
         self._db = Db()
         self._banco = self._db.get_connection()
@@ -17,7 +19,7 @@ class BensDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = 'DELETE FROM bens'
+            str_sql = f'DELETE FROM {self._nome_tabela}'
             cursor.execute(str_sql)
         except sqlite3.Error as erro:
             raise ValueError('Erro ao excluir todos os Bens: ', erro)
@@ -29,7 +31,7 @@ class BensDao:
         cursor = self._banco.cursor()
 
         try:
-            str_sql = "INSERT INTO bens "
+            str_sql = f"INSERT INTO {self._nome_tabela} "
             str_sql += "(Numero_Bem,Ccusto_Id,Status,Data_Inv,Conta,Data,Observacao,Local_Id,Usuario,Descricao,Marca,Modelo,Numero_Serie,Situacao)"
             str_sql += " VALUES "
             str_sql += f"({obj.get_numero_bem()},{obj.get_ccusto_id()},{obj.get_status()},'{obj.get_data_inv()}'," \
@@ -44,6 +46,107 @@ class BensDao:
             raise ValueError('Erro ao inserir os Bens: ', erro)
         finally:
             self._banco.commit()
+
+    def update(self, obj):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"UPDATE {self._nome_tabela} "
+            str_sql += f"SET Ccusto_Id = {obj.get_ccusto_id()}, "
+            str_sql += f"Status = {obj.get_status()}, "
+            str_sql += f"Data_Inv = '{obj.get_data_inv()}', "
+            str_sql += f"Conta = {obj.get_conta()}, "
+            str_sql += f"Data = '{obj.get_data()}', "
+            str_sql += f"Observacao = '{obj.get_observacao()}', "
+            str_sql += f"Local_Id = {obj.get_local_id()}, "
+            str_sql += f"Usuario = '{obj.get_usuario()}', "
+            str_sql += f"Descricao = '{obj.get_descricao()}', "
+            str_sql += f"Marca = '{obj.get_marca()}', "
+            str_sql += f"Modelo = '{obj.get_modelo()}', "
+            str_sql += f"Numero_Serie = '{obj.get_numeroserie()}', "
+            str_sql += f"Situacao = '{obj.get_situacao()}' "
+            str_sql += f"WHERE Numero_Bem = {obj.get_numero_bem()}"
+
+            cursor.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao atualizar o Bem: ', erro)
+        finally:
+            self._banco.commit()
+
+    def delete_by_id(self, id):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"DELETE FROM {self._nome_tabela} WHERE Numero_Bem = {id}"
+
+            cursor.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao excluir o Bem: ', erro)
+        finally:
+            self._banco.commit()
+
+    def find_by_id(self, id):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"SELECT * FROM {self._nome_tabela} " \
+                      f"WHERE Numero_Bem = {id}"
+
+            cursor.execute(str_sql)
+
+            lista = cursor.fetchall()
+
+            if len(lista) > 0:
+                return self.instantiate_bem(lista[0])
+
+            return None
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao encontrar o Bem: ', erro)
+
+    def find_all(self):
+
+        lista = []
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"SELECT * FROM {self._nome_tabela} ORDER BY Numero_bem"
+
+            cursor.execute(str_sql)
+
+            lista_bens = cursor.fetchall()
+
+            for row in lista_bens:
+                lista.append(self.instantiate_bem(row)) # Lista com os objetos de Centro de Custo
+
+            return lista
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao encontrar todos os Bens: ', erro)
+
+    def instantiate_bem(self, lista):
+        self.bens_temp =Bens()
+        self.bens_temp.set_numero_bem(int(lista[0]))
+        self.bens_temp.set_ccusto_id(int(lista[1]))
+        self.bens_temp.set_status(int(lista[2]))
+        self.bens_temp.set_data_inv(lista[3])
+        self.bens_temp.set_conta(int(lista[4]))
+        self.bens_temp.set_data(lista[5])
+        self.bens_temp.set_observacao(lista[6])
+        self.bens_temp.set_local_id(int(lista[7]))
+        self.bens_temp.set_usuario(lista[8])
+        self.bens_temp.set_descricao(lista[9])
+        self.bens_temp.set_marca(lista[10])
+        self.bens_temp.set_modelo(lista[11])
+        self.bens_temp.set_numeroserie(lista[12])
+        self.bens_temp.set_situacao(lista[13])
+        return self.bens_temp
 
     def salvar_campos_originais(self):
 
