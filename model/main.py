@@ -1,42 +1,45 @@
-from model.dao.centrodecustodao import CentroDeCustoDao
 from model.entities.centrodecusto import CentroDeCusto
 from model.entities.locais import Locais
-from model.entities.descrpadrao import DescrPadrao
-from model.entities.descrcomplementar import DescrComplementar
 from model.entities.bens import Bens
-from model.dao.locaisdao import LocaisDao
-from model.dao.descrpadraodao import DescrPadraoDao
-from model.dao.descrcomplementardao import DescrComplementarDao
-from model.dao.bensdao import BensDao
-
+from model.dao.impl.descrpadraodaoSqLite import DescrPadraoDaoSqLite
+from model.dao.impl.bensdaoSqLite import BensDaoSqLite
+from model.dao.impl.centrodecustodaoSqLite import CentroDeCustoDaoSqLite
+from model.dao.daofactory import DaoFactory
+#from model.dao.impl.locaisdaoSqLite import LocaisDaoSqLite
+from model.dao.impl.descrcomplementardaoSqLite import DescrComplementarDaoSqLite
 import os.path as file
 
-from db.db import Db
+#ccustodao = CentroDeCustoDaoSqLite()
+daofactory = DaoFactory()
+locaisdao = daofactory.create_locais_dao()
+locais = locaisdao.find_by_id(5)
+if locais is not None:
+ print('Local:', locais.get_local_id())
+ print('DescrLocal:', locais.get_descricao())
+# descrpadraodao = DescrPadraoDaoSqLite()
+# descrcomplementardao = DescrComplementarDaoSqLite()
+# bensdao = BensDaoSqLite()
 
-import csv
-import pandas as pd
-import xlrd as excel
 
-ccustodao = CentroDeCustoDao()
-ccusto = CentroDeCusto()
+#ccusto = CentroDeCusto()
 # lista_ccusto = ccustodao.find_all()
 # for ccusto in lista_ccusto:
 #     print(ccusto.get_ccusto_id(), ccusto.get_descricao(),ccusto.get_status(),ccusto.get_pendentes())
 # ccusto = ccustodao.find_by_id(308000)
 # if ccusto is not None:
 #     print(ccusto.get_ccusto_id(),ccusto.get_descricao(),ccusto.get_status(),ccusto.get_pendentes())
-ccusto.set_ccusto_id(300000)
-ccusto.set_descricao('TESTE')
-ccustodao.delete_by_id(ccusto.get_ccusto_id())
+# ccusto.set_ccusto_id(300000)
+# ccusto.set_descricao('TESTE')
+# ccustodao.delete_by_id(ccusto.get_ccusto_id())
 #ccustodao.update(ccusto)
 
-locaisdao = LocaisDao()
+#locaisdao = LocaisDaoSqLite()
 #print(ccusto.get_ccusto_id())
 
-locais = Locais()
-print(locais.get_local_id())
-
-descrpadraodao = DescrPadraoDao()
+# locais = Locais()
+# print(locais.get_local_id())
+#
+# descrpadraodao = DescrPadraoDao()
 # descrpadrao = descrpadraodao.find_by_id('VPD')
 # if descrpadrao is not None:
 #  print('Descr_Id:', descrpadrao.get_descricao_id())
@@ -63,13 +66,13 @@ descrpadraodao = DescrPadraoDao()
 # descrcomplementardao.delete_by_id('MAD')
 #print(descrcomplementar.get_descricao_id())
 
-bensdao = BensDao()
-#print(bens.get_numero_bem())
-bens = Bens()
-lista_bens = bensdao.find_all()
-for bens in lista_bens:
-    print(bens.get_numero_bem(),bens.get_ccusto_id(),bens.get_descricao(),bens.get_marca(),bens.get_modelo(),bens.get_numeroserie())
-# bens = bensdao.find_by_id(500)
+# bensdao = BensDao()
+# #print(bens.get_numero_bem())
+# bens = Bens()
+# lista_bens = bensdao.find_all()
+# for bens in lista_bens:
+#     print(bens.get_numero_bem(),bens.get_ccusto_id(),bens.get_descricao(),bens.get_marca(),bens.get_modelo(),bens.get_numeroserie())
+# # bens = bensdao.find_by_id(500)
 # if bens is not None:
 #     print(bens.get_numero_bem(),bens.get_ccusto_id(),bens.get_descricao(),bens.get_marca(),bens.get_modelo(),bens.get_numeroserie())
 #bens.set_numero_bem(181)
