@@ -11,11 +11,9 @@ class BensDaoSqLite(BensDao):
 
     _nome_tabela = 'bens'
 
-    def __init__(self):
-        self._db = Db()
-        self._banco = self._db.get_connection()
+    def __init__(self, conn):
+        self._banco = conn
         self.bens = Bens()
-        # self.CcustoDao = CentroDeCustoDao()
 
     def delete_all(self):
         cursor = self._banco.cursor()

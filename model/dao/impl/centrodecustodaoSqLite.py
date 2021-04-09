@@ -10,9 +10,8 @@ class CentroDeCustoDaoSqLite(CentroDeCustoDao):
 
     _nome_tabela = 'centrodecusto'
 
-    def __init__(self):
-        self._db = Db()
-        self._banco = self._db.get_connection()
+    def __init__(self, conn):
+        self._banco = conn
         self.ccusto = CentroDeCusto()
 
     def delete_all(self):

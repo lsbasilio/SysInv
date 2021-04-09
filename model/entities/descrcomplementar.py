@@ -17,3 +17,6 @@ class DescrComplementar:
 
     def set_descricao(self, valor):
         self._descricao = valor
+
+    def __str__(self):
+        return self._descricao_id + ' - ' + self._descricao

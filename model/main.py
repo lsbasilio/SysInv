@@ -1,6 +1,8 @@
 from model.entities.centrodecusto import CentroDeCusto
 from model.entities.locais import Locais
 from model.entities.bens import Bens
+from model.entities.descrpadrao import DescrPadrao
+from model.entities.descrcomplementar import DescrComplementar
 from model.dao.impl.descrpadraodaoSqLite import DescrPadraoDaoSqLite
 from model.dao.impl.bensdaoSqLite import BensDaoSqLite
 from model.dao.impl.centrodecustodaoSqLite import CentroDeCustoDaoSqLite
@@ -11,15 +13,38 @@ import os.path as file
 
 #ccustodao = CentroDeCustoDaoSqLite()
 daofactory = DaoFactory()
-locaisdao = daofactory.create_locais_dao()
-locais = locaisdao.find_by_id(5)
-if locais is not None:
- print('Local:', locais.get_local_id())
- print('DescrLocal:', locais.get_descricao())
+# locaisdao = daofactory.create_locais_dao()
+# locais = locaisdao.find_by_id(5)
+# if locais is not None:
+#  print('Local:', locais.get_local_id())
+#  print('DescrLocal:', locais.get_descricao())
+ 
+# descrpadraodao = daofactory.create_descrpadrao_dao()
+# descrpadrao = descrpadraodao.find_by_id('AA')
+# if descrpadrao is not None:
+#  print('Descr_id:', descrpadrao.get_descricao_id())
+#  print('Descr:', descrpadrao.get_descricao())
+
+# descrcomplementardao = daofactory.create_descrcomplementar_dao()
+# descrcomplementar = descrcomplementardao.find_by_id('CAD')
+# if descrcomplementar is not None:
+#  print('Descr_id:', descrcomplementar.get_descricao_id())
+#  print('Descr:', descrcomplementar.get_descricao())
 # descrpadraodao = DescrPadraoDaoSqLite()
 # descrcomplementardao = DescrComplementarDaoSqLite()
 # bensdao = BensDaoSqLite()
 
+# centrodecustodao = daofactory.create_centrodecusto_dao()
+# centrodecusto = centrodecustodao.find_by_id(101000)
+# if centrodecusto is not None:
+#  print('Ccusto_id:', centrodecusto.get_ccusto_id())
+#  print('Descr:', centrodecusto.get_descricao())
+
+# bensdao = daofactory.create_bens_dao()
+# bens = bensdao.find_by_id(436)
+# if bens is not None:
+#  print('Bens Id:', bens.get_numero_bem())
+#  print('Descr:', bens.get_descricao())
 
 #ccusto = CentroDeCusto()
 # lista_ccusto = ccustodao.find_all()
@@ -36,8 +61,14 @@ if locais is not None:
 #locaisdao = LocaisDaoSqLite()
 #print(ccusto.get_ccusto_id())
 
-# locais = Locais()
-# print(locais.get_local_id())
+locais = Locais(10, 'TESTE')
+print(locais)
+
+descrpadrao = DescrPadrao('CAFIND', 'TESTE')
+print(descrpadrao)
+
+descrcomplementar = DescrComplementar('ARM', 'ARMÁRIO')
+print(descrcomplementar)
 #
 # descrpadraodao = DescrPadraoDao()
 # descrpadrao = descrpadraodao.find_by_id('VPD')

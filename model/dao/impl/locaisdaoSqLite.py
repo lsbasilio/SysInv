@@ -11,8 +11,6 @@ class LocaisDaoSqLite(LocaisDao):
     _nome_tabela = 'locais'
 
     def __init__(self, conn):
-        # self._db = Db()
-        # self._banco = self._db.get_connection()
         self._banco = conn
         self.locais = Locais()
 

@@ -19,3 +19,6 @@ class Locais:
         self._descricao = valor
 
     ##### Métodos #####
+
+    def __str__(self):
+        return str(self._local_id) + ' - ' + self._descricao

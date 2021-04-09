@@ -10,9 +10,8 @@ class DescrComplementarDaoSqLite(DescrComplementarDao):
 
     _nome_tabela = 'descrcomplementar'
 
-    def __init__(self):
-        self._db = Db()
-        self._banco = self._db.get_connection()
+    def __init__(self, conn):
+        self._banco = conn
         self.descrcomplementar = DescrComplementar()
 
     def delete_all(self):
