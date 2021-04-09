@@ -1,10 +1,13 @@
+from model.entities.enum.ccusto_status import CcustoStatus
+
+
 class CentroDeCusto:
 
     ##### Construtores ######
-    def __init__(self,ccusto_id=0,descricao='',status=0,data_inicio='',data_fim='',pendentes=0,inventariados=0,novos=0):
+    def __init__(self,ccusto_id=0,descricao='',status=CcustoStatus.Nao_Inicializado,data_inicio='',data_fim='',pendentes=0,inventariados=0,novos=0):
         self._ccusto_id = ccusto_id
         self._descricao = descricao
-        self._status = status
+        self._status = CcustoStatus(status)
         self._data_inicio = data_inicio
         self._data_fim = data_fim
         self._pendentes = pendentes

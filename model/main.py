@@ -61,6 +61,9 @@ daofactory = DaoFactory()
 #locaisdao = LocaisDaoSqLite()
 #print(ccusto.get_ccusto_id())
 
+ccusto = CentroDeCusto()
+print(ccusto.get_status())
+
 locais = Locais(10, 'TESTE')
 print(locais)
 

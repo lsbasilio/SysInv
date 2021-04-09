@@ -1,10 +1,13 @@
+from model.entities.enum.bens_status import BensStatus
+
+
 class Bens:
 
     ##### Construtores ######
-    def __init__(self,numero_bem=0,ccusto_id=0,status=0,data_inv='',conta=0,data='',observacao='',local_id=0,usuario='',descricao='',marca='',modelo='',numeroserie='',situacao='',numero_bemant=0,ccusto_ant=0,local_ant=0,descricao_ant='',marca_ant='',modelo_ant='',numero_serieant=''):
+    def __init__(self,numero_bem=0,ccusto_id=0,status=BensStatus.Nao_Encontrado,data_inv='',conta=0,data='',observacao='',local_id=0,usuario='',descricao='',marca='',modelo='',numeroserie='',situacao='',numero_bemant=0,ccusto_ant=0,local_ant=0,descricao_ant='',marca_ant='',modelo_ant='',numero_serieant=''):
         self._numero_bem = numero_bem
         self._ccusto_id = ccusto_id
-        self._status = status
+        self._status = BensStatus(status)
         self._data_inv = data_inv
         self._conta = conta
         self._data = data
