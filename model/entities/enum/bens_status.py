@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class BensStatus(Enum):
+class BensStatus(IntEnum):
     Nao_Encontrado = 0
     Pendente = 1
     Inventariado = 2

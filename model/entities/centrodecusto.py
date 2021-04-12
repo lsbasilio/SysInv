@@ -63,10 +63,10 @@ class CentroDeCusto:
     def set_novos(self, valor):
         self._novos = valor
 
-    def __str__(self):
-        pass
-
     ##### Métodos #####
+    def __str__(self):
+        return str(self._ccusto_id) + ' - ' + self._descricao
+
     def ativar(self):
         pass
 

@@ -34,7 +34,7 @@ class BensDaoSqLite(BensDao):
             str_sql = f"INSERT INTO {self._nome_tabela} "
             str_sql += "(Numero_Bem,Ccusto_Id,Status,Data_Inv,Conta,Data,Observacao,Local_Id,Usuario,Descricao,Marca,Modelo,Numero_Serie,Situacao)"
             str_sql += " VALUES "
-            str_sql += f"({obj.get_numero_bem()},{obj.get_ccusto_id()},{obj.get_status()},'{obj.get_data_inv()}'," \
+            str_sql += f"({obj.get_numero_bem()},{obj.get_ccusto_id()},{int(obj.get_status())},'{obj.get_data_inv()}'," \
                        f"{obj.get_conta()},'{obj.get_data()}','{obj.get_observacao()}'," \
                        f"{obj.get_local_id()},'{obj.get_usuario()}'," \
                        f"'{obj.get_descricao()}','{obj.get_marca()}','{obj.get_modelo()}'," \
@@ -54,7 +54,7 @@ class BensDaoSqLite(BensDao):
         try:
             str_sql = f"UPDATE {self._nome_tabela} "
             str_sql += f"SET Ccusto_Id = {obj.get_ccusto_id()}, "
-            str_sql += f"Status = {obj.get_status()}, "
+            str_sql += f"Status = {int(obj.get_status())}, "
             str_sql += f"Data_Inv = '{obj.get_data_inv()}', "
             str_sql += f"Conta = {obj.get_conta()}, "
             str_sql += f"Data = '{obj.get_data()}', "

@@ -7,12 +7,19 @@ from model.dao.impl.descrpadraodaoSqLite import DescrPadraoDaoSqLite
 from model.dao.impl.bensdaoSqLite import BensDaoSqLite
 from model.dao.impl.centrodecustodaoSqLite import CentroDeCustoDaoSqLite
 from model.dao.daofactory import DaoFactory
+from model.services.locaisservice import LocaisService
+from model.services.descrpadraoservice import DescrPadraoService
+from model.services.descrcomplementarservice import DescrComplementarService
+from model.services.centrodecustoservice import CentroDeCustoService
+from model.services.bensservice import BensService
+from model.entities.enum.ccusto_status import CcustoStatus
+from model.entities.enum.bens_status import BensStatus
 #from model.dao.impl.locaisdaoSqLite import LocaisDaoSqLite
 from model.dao.impl.descrcomplementardaoSqLite import DescrComplementarDaoSqLite
 import os.path as file
 
 #ccustodao = CentroDeCustoDaoSqLite()
-daofactory = DaoFactory()
+#daofactory = DaoFactory()
 # locaisdao = daofactory.create_locais_dao()
 # locais = locaisdao.find_by_id(5)
 # if locais is not None:
@@ -64,14 +71,48 @@ daofactory = DaoFactory()
 ccusto = CentroDeCusto()
 print(ccusto.get_status())
 
-locais = Locais(10, 'TESTE')
-print(locais)
+locais = Locais(10, 'ALTERADO')
+localservice = LocaisService()
+#localservice.remove(locais)
+#localservice.save_or_update(locais)
+# lista = localservice.find_all()
+# for local in lista:
+#     print(local)
 
-descrpadrao = DescrPadrao('CAFIND', 'TESTE')
-print(descrpadrao)
+descrpadrao = DescrPadrao('CAF', 'CAFETEIRA TESTANDO')
+descrpadraoservice = DescrPadraoService()
+#descrpadraoservice.remove(descrpadrao)
+#descrpadraoservice.save_or_update(descrpadrao)
+# lista = descrpadraoservice.find_all()
+# for desc in lista:
+#     print(desc)
 
-descrcomplementar = DescrComplementar('ARM', 'ARMÁRIO')
-print(descrcomplementar)
+descrcomplementar = DescrComplementar('MAD', 'MADEIRA TESTANDO')
+descrcomplementarservice = DescrComplementarService()
+descrcomplementarservice.remove(descrcomplementar)
+#descrcomplementarservice.save_or_update(descrcomplementar)
+# lista = descrcomplementarservice.find_all()
+# for descr in lista:
+#     print(descr)
+
+ccusto = CentroDeCusto(302000, 'CCUSTO TESTANDO',CcustoStatus.Ativo,'','',3,3,3)
+ccustoservice = CentroDeCustoService()
+#ccustoservice.remove(ccusto)
+#ccustoservice.save_or_update(ccusto)
+# lista = ccustoservice.find_all()
+# for setor in lista:
+#     print(setor)
+
+bens = Bens(431, 204000, BensStatus.Inventariado,'01/04/2020',123,'25/01/1999','OBS',2323,'Leandro','DETECTOR ALTERADO','MARCA','MODELO','NUM_SERIE','SITUAÇÃO')
+bensservice = BensService()
+bensservice.remove(bens)
+#bensservice.save_or_update(bens)
+# lista = bensservice.find_all()
+# for bem in lista:
+#     print(str(bem.get_numero_bem()) + ' - ' + bem.get_descricao())
+
+# descrcomplementar = DescrComplementar('ARM', 'ARMÁRIO')
+# print(descrcomplementar)
 #
 # descrpadraodao = DescrPadraoDao()
 # descrpadrao = descrpadraodao.find_by_id('VPD')
