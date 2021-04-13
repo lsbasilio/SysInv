@@ -1,4 +1,5 @@
 from model.entities.enum.ccusto_status import CcustoStatus
+from util import util
 
 
 class CentroDeCusto:
@@ -68,8 +69,10 @@ class CentroDeCusto:
         return str(self._ccusto_id) + ' - ' + self._descricao
 
     def ativar(self):
-        pass
+        self._status = CcustoStatus.Ativo
+        self._data_inicio = util.get_data_hora_atual()
 
     def encerrar(self):
-        pass
+        self._status = CcustoStatus.Finalizado
+        self._data_fim = util.get_data_hora_atual()
 

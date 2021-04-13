@@ -69,43 +69,47 @@ import os.path as file
 #print(ccusto.get_ccusto_id())
 
 ccusto = CentroDeCusto()
-print(ccusto.get_status())
+ccusto.set_ccusto_id(2)
+ccusto.ativar()
+print(ccusto.get_ccusto_id(), ccusto.get_status(), ccusto.get_data_inicio())
+ccusto.encerrar()
+print(ccusto.get_ccusto_id(), ccusto.get_status(), ccusto.get_data_inicio())
 
-locais = Locais(10, 'ALTERADO')
-localservice = LocaisService()
+# locais = Locais(10, 'ALTERADO')
+# localservice = LocaisService()
 #localservice.remove(locais)
 #localservice.save_or_update(locais)
 # lista = localservice.find_all()
 # for local in lista:
 #     print(local)
 
-descrpadrao = DescrPadrao('CAF', 'CAFETEIRA TESTANDO')
-descrpadraoservice = DescrPadraoService()
+# descrpadrao = DescrPadrao('CAF', 'CAFETEIRA TESTANDO')
+# descrpadraoservice = DescrPadraoService()
 #descrpadraoservice.remove(descrpadrao)
 #descrpadraoservice.save_or_update(descrpadrao)
 # lista = descrpadraoservice.find_all()
 # for desc in lista:
 #     print(desc)
 
-descrcomplementar = DescrComplementar('MAD', 'MADEIRA TESTANDO')
-descrcomplementarservice = DescrComplementarService()
-descrcomplementarservice.remove(descrcomplementar)
+# descrcomplementar = DescrComplementar('MAD', 'MADEIRA TESTANDO')
+# descrcomplementarservice = DescrComplementarService()
+# descrcomplementarservice.remove(descrcomplementar)
 #descrcomplementarservice.save_or_update(descrcomplementar)
 # lista = descrcomplementarservice.find_all()
 # for descr in lista:
 #     print(descr)
 
-ccusto = CentroDeCusto(302000, 'CCUSTO TESTANDO',CcustoStatus.Ativo,'','',3,3,3)
-ccustoservice = CentroDeCustoService()
+# ccusto = CentroDeCusto(302000, 'CCUSTO TESTANDO',CcustoStatus.Ativo,'','',3,3,3)
+# ccustoservice = CentroDeCustoService()
 #ccustoservice.remove(ccusto)
 #ccustoservice.save_or_update(ccusto)
 # lista = ccustoservice.find_all()
 # for setor in lista:
 #     print(setor)
 
-bens = Bens(431, 204000, BensStatus.Inventariado,'01/04/2020',123,'25/01/1999','OBS',2323,'Leandro','DETECTOR ALTERADO','MARCA','MODELO','NUM_SERIE','SITUAÇÃO')
-bensservice = BensService()
-bensservice.remove(bens)
+# bens = Bens(431, 204000, BensStatus.Inventariado,'01/04/2020',123,'25/01/1999','OBS',2323,'Leandro','DETECTOR ALTERADO','MARCA','MODELO','NUM_SERIE','SITUAÇÃO')
+# bensservice = BensService()
+# bensservice.remove(bens)
 #bensservice.save_or_update(bens)
 # lista = bensservice.find_all()
 # for bem in lista:
