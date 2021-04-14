@@ -68,20 +68,20 @@ import os.path as file
 #locaisdao = LocaisDaoSqLite()
 #print(ccusto.get_ccusto_id())
 
-ccusto = CentroDeCusto()
-ccusto.set_ccusto_id(2)
-ccusto.ativar()
-print(ccusto.get_ccusto_id(), ccusto.get_status(), ccusto.get_data_inicio())
-ccusto.encerrar()
-print(ccusto.get_ccusto_id(), ccusto.get_status(), ccusto.get_data_inicio())
+# ccusto = CentroDeCusto()
+# ccusto.set_ccusto_id(2)
+# ccusto.ativar()
+# print(ccusto.get_ccusto_id(), ccusto.get_status(), ccusto.get_data_inicio())
+# ccusto.encerrar()
+# print(ccusto.get_ccusto_id(), ccusto.get_status(), ccusto.get_data_inicio())
 
 # locais = Locais(10, 'ALTERADO')
-# localservice = LocaisService()
+localservice = LocaisService()
 #localservice.remove(locais)
 #localservice.save_or_update(locais)
-# lista = localservice.find_all()
-# for local in lista:
-#     print(local)
+lista = localservice.find_all()
+for local in lista:
+    print(local)
 
 # descrpadrao = DescrPadrao('CAF', 'CAFETEIRA TESTANDO')
 # descrpadraoservice = DescrPadraoService()
@@ -270,3 +270,4 @@ print(dict['Leandro'])
 dict2 = {2250: 40}
 dict2[2250] = dict2[2250] + 1
 print(dict2[2250])
+

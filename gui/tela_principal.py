@@ -6,13 +6,15 @@ from util import util
 # Criar as janelas e estilos (layout)
 class JanelaPrincipal:
 
+    janela = None
+
     def __init__(self):
 
         self.window, self.event, self.values = None, None, None
         size_botao = 25
 
         # Criar as janelas iniciais
-        self.janela = None
+        #self.janela = None
         self.janela_ccusto = None
         self.janelaccusto = None
 
@@ -30,7 +32,9 @@ class JanelaPrincipal:
 
     def retorna_janela(self):
         # Retorna Janela Principal
-        return sg.Window('Tela Principal', layout=self.layout, finalize=True)
+        self.janela = sg.Window('Tela Principal', layout=self.layout, finalize=True)
+        return self.janela
+        #return sg.Window('Tela Principal', layout=self.layout, finalize=True)
 
 
     def iniciar_tela(self):
@@ -42,21 +46,30 @@ class JanelaPrincipal:
 
             # Quando a janela principal for fechada
             if self.window == self.janela and self.event == sg.WINDOW_CLOSED:
+                print('Fechou')
                 self.janela.close()
-                exit()  #break
+                exit()
+                break
 
             # Quando a janela de Centro de Custo for fechada
-            if self.window == self.janela_ccusto and self.event == sg.WINDOW_CLOSED:
-                #print('Fechou')
+            if self.window == JanelaCcusto.janela and self.event == sg.WINDOW_CLOSED:
                 self.janela_ccusto.hide()
                 self.janela.un_hide()
 
+            print('Voltou')
+
             # Quando queremos ir para outra janela
             if self.window == self.janela and self.event == 'Ativar Centro de Custo':
-                #print('Entrou')
+                print('Entrou')
                 self.janela.hide()
-                self.janelaccusto = JanelaCcusto()
-                self.janela_ccusto = self.janelaccusto.retorna_janela()
-                self.janelaccusto.iniciar_tela()
+                if self.janela_ccusto is None:
+                    self.janelaccusto = JanelaCcusto()
+                    self.janela_ccusto = self.janelaccusto.retorna_janela()
+                    self.janelaccusto.janelaprincipal = self.janela
+                    self.janelaccusto.iniciar_tela()
+                else:
+                    self.janela_ccusto.un_hide()
+
+                #print(self.janela_ccusto.values['ccusto'])
 
 

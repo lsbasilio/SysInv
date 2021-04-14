@@ -27,7 +27,7 @@ class Db:
     @staticmethod
     def _load_properties(propriedade):
         try:
-            arquivodb = open('..\dbproperties.txt', 'r')
+            arquivodb = open('dbproperties.txt', 'r')
             for line in arquivodb:
                 texto = line.split('=')
                 if propriedade == texto[0]:
