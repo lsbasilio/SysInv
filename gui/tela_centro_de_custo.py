@@ -31,20 +31,17 @@ class JanelaCcusto:
             [sg.Text('Centro de Custo')],
             [sg.Combo(self.lista, size=(40, 1), default_value=self.lista[0], readonly=True, enable_events=True, key='ccusto')],
             [sg.Text('Descrição')],
-            [sg.Input(size=(42, 1), key='descricao')],
+            [sg.Input(size=(42, 1), default_text=self.lista_entity[0].get_descricao(), key='descricao')],
             [sg.Text('Data Início')],
-            [sg.Input(size=(42, 1), key='data_inicio', readonly=True)],
+            [sg.Input(size=(42, 1), default_text=self.lista_entity[0].get_data_inicio(), key='data_inicio', readonly=True)],
             [sg.Text('Data Fim')],
-            [sg.Input(size=(42, 1), key='data_fim', readonly=True)],
+            [sg.Input(size=(42, 1), default_text=self.lista_entity[0].get_data_fim(), key='data_fim', readonly=True)],
             [sg.Text('Status: ')],
-            [sg.Input(size=(42, 1), key='status', readonly=True)],
-            [sg.Text('Bens Pendentes: '), sg.Text('0', size=(10, 1), key='pendentes')],
-            [sg.Text('Bens Inventariados: '), sg.Text('0', size=(10, 1), key='inventariados')],
-            [sg.Text('Bens Novos: '), sg.Text('0', size=(10, 1), key='novos')]
+            [sg.Input(size=(42, 1), default_text=self.lista_entity[0].get_status(), key='status', readonly=True)],
+            [sg.Text('Bens Pendentes: '), sg.Text(self.lista_entity[0].get_pendentes(), size=(10, 1), key='pendentes')],
+            [sg.Text('Bens Inventariados: '), sg.Text(self.lista_entity[0].get_inventariados(), size=(10, 1), key='inventariados')],
+            [sg.Text('Bens Novos: '), sg.Text(self.lista_entity[0].get_novos(), size=(10, 1), key='novos')]
         ]
-
-        # ccusto_id = util.get_id(self.lista[0])
-        # self.get_dados(ccusto_id)
 
     def retorna_janela(self):
         # Retorna Janela Centro de Custo
