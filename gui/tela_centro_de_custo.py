@@ -1,6 +1,4 @@
 import PySimpleGUI as sg
-from util import util
-from model.entities.centrodecusto import CentroDeCusto
 from model.services.centrodecustoservice import CentroDeCustoService
 from util import util
 
