@@ -8,7 +8,7 @@ class JanelaLocais:
 
     service = LocaisService()
 
-    size_input = 42
+    size_input = util.get_size_input()
 
     def __init__(self):
 
@@ -25,7 +25,7 @@ class JanelaLocais:
 
         self.layout = [
             [sg.Text('Locais')],
-            [sg.Combo(self.lista, size=(40, 1), default_value=self.lista[0], readonly=True, enable_events=True, key='locais')],
+            [sg.Combo(self.lista, size=(self.size_input - 2, 1), default_value=self.lista[0], readonly=True, enable_events=True, key='locais')],
             [sg.Text('Descrição')],
             [sg.Input(size=(self.size_input, 1), default_text=self.lista_entity[0].get_descricao(), key='descricao')]
         ]

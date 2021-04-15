@@ -8,7 +8,7 @@ class JanelaCcusto:
 
     service = CentroDeCustoService()
 
-    size_input = 42
+    size_input = util.get_size_input()
 
     def __init__(self):
 
