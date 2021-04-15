@@ -16,3 +16,9 @@ def get_data_hora_atual():
 def get_tema_janelas():
     return 'DarkTeal7'
 
+
+def get_id(valor):
+    valor_selecionado = valor
+    id = valor_selecionado.split(' - ')
+    return id[0]
+

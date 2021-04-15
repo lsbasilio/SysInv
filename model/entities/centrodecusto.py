@@ -29,7 +29,14 @@ class CentroDeCusto:
         self._descricao = valor
 
     def get_status(self):
-        return self._status
+        if self._status == CcustoStatus.Nao_Inicializado:
+            return 'Não Inicializado'
+        elif self._status == CcustoStatus.Em_Andamento:
+            return 'Em Andamento'
+        elif self._status == CcustoStatus.Ativo:
+            return 'Ativo'
+        elif self._status == CcustoStatus.Finalizado:
+            return 'Finalizado'
 
     def set_status(self, valor):
         self._status = valor

@@ -36,7 +36,6 @@ class JanelaPrincipal:
         return self.janela
         #return sg.Window('Tela Principal', layout=self.layout, finalize=True)
 
-
     def iniciar_tela(self):
 
         # Cria um loop de leitura de eventos
