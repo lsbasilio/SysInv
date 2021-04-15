@@ -11,10 +11,10 @@ class JanelaPrincipal:
     def __init__(self):
 
         self.window, self.event, self.values = None, None, None
+
         size_botao = 25
 
         # Criar as janelas iniciais
-        #self.janela = None
         self.janela_ccusto = None
         self.janelaccusto = None
 
@@ -33,8 +33,8 @@ class JanelaPrincipal:
     def retorna_janela(self):
         # Retorna Janela Principal
         self.janela = sg.Window('Tela Principal', layout=self.layout, finalize=True)
+        self.janela_ccusto = None
         return self.janela
-        #return sg.Window('Tela Principal', layout=self.layout, finalize=True)
 
     def iniciar_tela(self):
 
@@ -51,24 +51,19 @@ class JanelaPrincipal:
                 break
 
             # Quando a janela de Centro de Custo for fechada
-            if self.window == JanelaCcusto.janela and self.event == sg.WINDOW_CLOSED:
+            if self.window == self.janela_ccusto and self.event == sg.WINDOW_CLOSED:
                 self.janela_ccusto.hide()
                 self.janela.un_hide()
 
-            print('Voltou')
-
             # Quando queremos ir para outra janela
             if self.window == self.janela and self.event == 'Ativar Centro de Custo':
-                print('Entrou')
                 self.janela.hide()
-                if self.janela_ccusto is None:
-                    self.janelaccusto = JanelaCcusto()
-                    self.janela_ccusto = self.janelaccusto.retorna_janela()
-                    self.janelaccusto.janelaprincipal = self.janela
-                    self.janelaccusto.iniciar_tela()
-                else:
-                    self.janela_ccusto.un_hide()
+                self.janelaccusto = JanelaCcusto()
+                self.janela_ccusto = sg.Window('Centro de Custo', layout=self.janelaccusto.layout, finalize=True)
 
-                #print(self.janela_ccusto.values['ccusto'])
+            # Eventos da Janela de Centro de Custo
+            if self.window == self.janela_ccusto and self.event == 'ccusto':
+                ccusto_id = util.get_id(self.values['ccusto'])
+                self.janelaccusto.get_dados(self.janela_ccusto, ccusto_id)
 
 
