@@ -16,6 +16,9 @@ class CentroDeCustoService:
     def find_by_id(self, id):
         return self._dao.find_by_id(id)
 
+    def find_ccusto_ativo(self):
+        return self._dao.find_ccusto_ativo()
+
     def find_all(self):
         return self._dao.find_all()
 

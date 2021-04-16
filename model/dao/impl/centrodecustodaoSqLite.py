@@ -4,6 +4,7 @@ import csv
 import pandas as pd
 from model.entities.centrodecusto import CentroDeCusto
 from model.dao.centrodecustodao import CentroDeCustoDao
+from model.entities.enum.ccusto_status import CcustoStatus
 
 
 class CentroDeCustoDaoSqLite(CentroDeCustoDao):
@@ -96,7 +97,27 @@ class CentroDeCustoDaoSqLite(CentroDeCustoDao):
             return None
 
         except sqlite3.Error as erro:
-            raise ValueError('Erro ao encontrar o Local: ', erro)
+            raise ValueError('Erro ao encontrar o Centro de Custo: ', erro)
+
+    def find_ccusto_ativo(self):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"SELECT * FROM {self._nome_tabela} " \
+                      f"WHERE Status = " + str(int(CcustoStatus.Ativo))
+
+            cursor.execute(str_sql)
+
+            lista = cursor.fetchall()
+
+            if len(lista) > 0:
+                return self.instantiate_ccusto(lista[0])
+
+            return None
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao encontrar o Centro de Custo Ativo: ', erro)
 
     def find_all(self):
 

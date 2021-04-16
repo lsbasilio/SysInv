@@ -131,3 +131,6 @@ class JanelaPrincipal:
             if self.window == self.janela_descr_compl and self.event == 'descrcomplementar':
                 descr_id = util.get_id(self.values['descrcomplementar'])
                 self.janeladescrcompl.get_dados(self.janela_descr_compl, descr_id)
+
+    def teste(self):
+        pass

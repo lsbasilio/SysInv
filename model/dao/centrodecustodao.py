@@ -24,6 +24,10 @@ class CentroDeCustoDao(ABC):
         pass
 
     @abstractmethod
+    def find_ccusto_ativo(self):
+        pass
+
+    @abstractmethod
     def find_all(self):
         pass
 
