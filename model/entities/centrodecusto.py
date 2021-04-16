@@ -38,6 +38,9 @@ class CentroDeCusto:
         elif self._status == CcustoStatus.Finalizado:
             return 'Finalizado'
 
+    def get_status_numerico(self):
+        return int(self._status)
+
     def set_status(self, valor):
         self._status = valor
 

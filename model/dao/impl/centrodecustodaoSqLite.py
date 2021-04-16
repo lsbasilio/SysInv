@@ -34,7 +34,7 @@ class CentroDeCustoDaoSqLite(CentroDeCustoDao):
             str_sql = f"INSERT INTO {self._nome_tabela} "
             str_sql += "(Ccusto_id,Descricao,Status,Data_Inicio,Data_Fim,Pendentes,Inventariados,Novos)"
             str_sql += " VALUES "
-            str_sql += f"({obj.get_ccusto_id()},'{obj.get_descricao()}',{int(obj.get_status())},'{obj.get_data_inicio()}','{obj.get_data_fim()}',{obj.get_pendentes()},{obj.get_inventariados()},{obj.get_novos()})"
+            str_sql += f"({obj.get_ccusto_id()},'{obj.get_descricao()}',{obj.get_status_numerico()},'{obj.get_data_inicio()}','{obj.get_data_fim()}',{obj.get_pendentes()},{obj.get_inventariados()},{obj.get_novos()})"
 
             cursor.execute(str_sql)
 
@@ -50,7 +50,7 @@ class CentroDeCustoDaoSqLite(CentroDeCustoDao):
         try:
             str_sql = f"UPDATE {self._nome_tabela} "
             str_sql += f"SET Descricao = '{obj.get_descricao()}', "
-            str_sql += f"Status = {int(obj.get_status())}, "
+            str_sql += f"Status = {obj.get_status_numerico()}, "
             str_sql += f"Data_Inicio = '{obj.get_data_inicio()}', "
             str_sql += f"Data_Fim = '{obj.get_data_fim()}', "
             str_sql += f"Pendentes = {obj.get_pendentes()}, "

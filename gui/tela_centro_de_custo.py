@@ -28,31 +28,59 @@ class JanelaCcusto:
 
         self.layout = [
             [sg.Text('Centro de Custo')],
-            [sg.Combo(self.lista, size=(40, 1), default_value=self.CcustoAtivo.__str__(), readonly=True, enable_events=True, key='ccusto')],
+            [sg.Combo(self.lista, size=(45, 1), default_value=self.CcustoAtivo.__str__(), readonly=True, enable_events=True, key='ccusto')],
             [sg.Text('Descrição')],
             [sg.Input(size=(self.size_input, 1), default_text=self.CcustoAtivo.get_descricao(), key='descricao')],
             [sg.Text('Data Início')],
             [sg.Input(size=(self.size_input, 1), default_text=self.CcustoAtivo.get_data_inicio(), key='data_inicio', readonly=True)],
             [sg.Text('Data Fim')],
             [sg.Input(size=(self.size_input, 1), default_text=self.CcustoAtivo.get_data_fim(), key='data_fim', readonly=True)],
-            [sg.Text('Status: ')],
+            [sg.Text('Status')],
             [sg.Input(size=(self.size_input, 1), default_text=self.CcustoAtivo.get_status(), key='status', readonly=True)],
             [sg.Text('Bens Pendentes: '), sg.Text(self.CcustoAtivo.get_pendentes(), size=(10, 1), key='pendentes')],
             [sg.Text('Bens Inventariados: '), sg.Text(self.CcustoAtivo.get_inventariados(), size=(10, 1), key='inventariados')],
-            [sg.Text('Bens Novos: '), sg.Text(self.CcustoAtivo.get_novos(), size=(10, 1), key='novos')]
+            [sg.Text('Bens Novos: '), sg.Text(self.CcustoAtivo.get_novos(), size=(10, 1), key='novos')],
+            [sg.Button('Novo', size=(8, 1)), sg.Button('Ativar', size=(8, 1)), sg.Button('Encerrar', size=(9,1)), sg.Button('Salvar', size=(8,1))]
         ]
+
+    def update_form_data(self, janela, ccusto):
+        janela.FindElement('descricao').Update(ccusto.get_descricao())
+        janela.FindElement('data_inicio').Update(ccusto.get_data_inicio())
+        janela.FindElement('data_fim').Update(ccusto.get_data_fim())
+        janela.FindElement('status').Update(ccusto.get_status())
+        janela.FindElement('pendentes').Update(str(ccusto.get_pendentes()))
+        janela.FindElement('inventariados').Update(str(ccusto.get_inventariados()))
+        janela.FindElement('novos').Update(str(ccusto.get_novos()))
 
     def get_dados(self, janela, id):
         for ccusto in self.lista_entity:
             if ccusto.get_ccusto_id() == int(id):
-                janela.FindElement('descricao').Update(ccusto.get_descricao())
-                janela.FindElement('data_inicio').Update(ccusto.get_data_inicio())
-                janela.FindElement('data_fim').Update(ccusto.get_data_fim())
-                janela.FindElement('status').Update(str(ccusto.get_status()))
-                janela.FindElement('pendentes').Update(str(ccusto.get_pendentes()))
-                janela.FindElement('inventariados').Update(str(ccusto.get_inventariados()))
-                janela.FindElement('novos').Update(str(ccusto.get_novos()))
+                self.update_form_data(janela, ccusto)
                 break
+
+    def ativar(self, janela, id):
+        try:
+            ccusto_ativo = self.service.find_ccusto_ativo()
+
+            if util.try_parse_to_int(id) is None:
+                sg.popup('Código de Centro de Custo inválido!')
+            elif ccusto_ativo is not None and ccusto_ativo.get_ccusto_id() != int(id):
+                sg.popup('Já existe Centro de Custo Ativo!')
+            else:
+                for ccusto in self.lista_entity:
+                    if ccusto.get_ccusto_id() == int(id):
+                        ccusto.ativar()
+                        self.service.save_or_update(ccusto)
+                        self.update_form_data(janela, ccusto)
+                        sg.popup('Centro de Custo ativado com sucesso!')
+        except ValueError as e:
+            sg.popup(f'Erro ao ativar o Centro de Custo: {e}')
+
+
+
+
+
+
 
 
 

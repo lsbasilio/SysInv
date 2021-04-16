@@ -16,11 +16,21 @@ def get_data_hora_atual():
 def get_tema_janelas():
     return 'DarkTeal7'
 
+
 def get_size_input():
-    return 42
+    return 47
+
 
 def get_id(valor):
     valor_selecionado = valor
     id = valor_selecionado.split(' - ')
     return id[0]
+
+
+def try_parse_to_int(string):
+    try:
+        return int(string)
+    except (TypeError, ValueError):
+        return None
+
 
