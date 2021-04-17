@@ -1,11 +1,13 @@
 import PySimpleGUI as sg
 from model.services.centrodecustoservice import CentroDeCustoService
+from model.entities.centrodecusto import CentroDeCusto
 from util import util
 
 
 # Criar as janelas e estilos (layout)
 class JanelaCcusto:
 
+    entity = CentroDeCusto()
     service = CentroDeCustoService()
 
     size_input = util.get_size_input()
@@ -52,27 +54,43 @@ class JanelaCcusto:
         janela.FindElement('inventariados').Update(str(ccusto.get_inventariados()))
         janela.FindElement('novos').Update(str(ccusto.get_novos()))
 
-    def get_dados(self, janela, id):
+    def get_ccusto_lista(self, id):     # Não está sendo utilizada
         for ccusto in self.lista_entity:
             if ccusto.get_ccusto_id() == int(id):
-                self.update_form_data(janela, ccusto)
-                break
+                return ccusto
+        return None
+
+    def get_dados(self, janela, id):
+        self.entity = self.service.find_by_id(int(id))
+        if self.entity is not None:
+            self.update_form_data(janela, self.entity)
+        else:
+            sg.popup('Centro de Custo não encontrado!')
 
     def ativar(self, janela, id):
+        # entity = self.service.find_by_id(id)
+        if self.entity is not None:
+            self.entity.ativar()
+            self.service.save_or_update(self.entity)
+            self.update_form_data(janela, self.entity)
+            sg.popup('Centro de Custo ativado com sucesso!')
+        else:
+            sg.popup('Centro de Custo a ativar não encontrado!')
+
+    def botao_ativar(self, janela, id):
         try:
+
             ccusto_ativo = self.service.find_ccusto_ativo()
 
             if util.try_parse_to_int(id) is None:
                 sg.popup('Código de Centro de Custo inválido!')
             elif ccusto_ativo is not None and ccusto_ativo.get_ccusto_id() != int(id):
-                sg.popup('Já existe Centro de Custo Ativo!')
+                if sg.popup_yes_no('Já existe outro Centro de Custo Ativo!\nDeseja ativar mesmo assim?') == 'Yes':
+                    self.service.altera_status_ccusto_ativo()
+                    self.ativar(janela, id)
             else:
-                for ccusto in self.lista_entity:
-                    if ccusto.get_ccusto_id() == int(id):
-                        ccusto.ativar()
-                        self.service.save_or_update(ccusto)
-                        self.update_form_data(janela, ccusto)
-                        sg.popup('Centro de Custo ativado com sucesso!')
+                self.ativar(janela, id)
+
         except ValueError as e:
             sg.popup(f'Erro ao ativar o Centro de Custo: {e}')
 

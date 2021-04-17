@@ -140,6 +140,22 @@ class CentroDeCustoDaoSqLite(CentroDeCustoDao):
         except sqlite3.Error as erro:
             raise ValueError('Erro ao encontrar todos os Centro de Custo: ', erro)
 
+    def altera_status_ccusto_ativo(self):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"UPDATE {self._nome_tabela} "
+            str_sql += f"SET Status = {int(CcustoStatus.Em_Andamento)} "
+            str_sql += f'WHERE Status = {int(CcustoStatus.Ativo)}'
+
+            cursor.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao atualizar o Centro de Custo Ativo: ', erro)
+        finally:
+            self._banco.commit()
+
     def instantiate_ccusto(self, lista):
         self.ccustos_temp = CentroDeCusto()
         self.ccustos_temp.set_ccusto_id(int(lista[0]))

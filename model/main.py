@@ -76,12 +76,12 @@ import os.path as file
 # print(ccusto.get_ccusto_id(), ccusto.get_status(), ccusto.get_data_inicio())
 
 # locais = Locais(10, 'ALTERADO')
-localservice = LocaisService()
+#localservice = LocaisService()
 #localservice.remove(locais)
 #localservice.save_or_update(locais)
-lista = localservice.find_all()
-for local in lista:
-    print(local)
+# lista = localservice.find_all()
+# for local in lista:
+#     print(local)
 
 # descrpadrao = DescrPadrao('CAF', 'CAFETEIRA TESTANDO')
 # descrpadraoservice = DescrPadraoService()
@@ -236,27 +236,27 @@ teste = 'TESTE1;TESTE2'
 # centrodao.insert(ccusto)
 
 
-def load_properties(propriedade):
-    arquivodb = open('C:\dev\SysInv\dbproperties.txt', 'r')
-    texto = arquivodb.readline()
-    #print('texto:', "'" + texto.replace("\n",'') + "'")
-    print('texto:', "'" + texto.replace('\n',''))
-    for line in arquivodb.readlines():
-        str = line.split('=')
-        if propriedade == str[0]:
-            return str[1]
-
-
-def ler_linhas_arquivo(propriedade):
-    arquivodb = open('..\dbproperties.txt', 'r')   # 'C:\dev\SysInv\dbproperties.txt'
-    for linha in arquivodb:
-        str = linha.split('=')
-        if propriedade == str[0]:
-            return "'" + str[1].rstrip('\n') + "'"
-    arquivodb.close()
-
-
-print(ler_linhas_arquivo('dblocation'))
+# def load_properties(propriedade):
+#     arquivodb = open('C:\dev\SysInv\dbproperties.txt', 'r')
+#     texto = arquivodb.readline()
+#     #print('texto:', "'" + texto.replace("\n",'') + "'")
+#     print('texto:', "'" + texto.replace('\n',''))
+#     for line in arquivodb.readlines():
+#         str = line.split('=')
+#         if propriedade == str[0]:
+#             return str[1]
+#
+#
+# def ler_linhas_arquivo(propriedade):
+#     arquivodb = open('..\dbproperties.txt', 'r')   # 'C:\dev\SysInv\dbproperties.txt'
+#     for linha in arquivodb:
+#         str = linha.split('=')
+#         if propriedade == str[0]:
+#             return "'" + str[1].rstrip('\n') + "'"
+#     arquivodb.close()
+#
+#
+# print(ler_linhas_arquivo('dblocation'))
 # print(load_properties('dblocation'))
 
 #arquivodb = open('dbproperties.txt', 'r')
@@ -270,4 +270,14 @@ print(dict['Leandro'])
 dict2 = {2250: 40}
 dict2[2250] = dict2[2250] + 1
 print(dict2[2250])
+
+service = CentroDeCustoService()
+ccusto_ativo = service.find_ccusto_ativo()
+
+# ccusto1 = CentroDeCusto(1, 'Ccusto1')
+# ccusto2 = CentroDeCusto(2, 'Ccusto2')
+
+lista = service.find_all()
+
+print(lista.index(ccusto_ativo))
 

@@ -135,4 +135,4 @@ class JanelaPrincipal:
             # Se clicou no Botão Ativar Centro de Custo
             if self.window == self.janela_ccusto and self.event == 'Ativar':
                 ccusto_id = util.get_id(self.values['ccusto'])
-                self.janelaccusto.ativar(self.janela_ccusto, ccusto_id)
+                self.janelaccusto.botao_ativar(self.janela_ccusto, ccusto_id)

@@ -22,5 +22,8 @@ class CentroDeCustoService:
     def find_all(self):
         return self._dao.find_all()
 
+    def altera_status_ccusto_ativo(self):
+        return self._dao.altera_status_ccusto_ativo()
+
     def remove(self, obj):
         self._dao.delete_by_id(obj.get_ccusto_id())

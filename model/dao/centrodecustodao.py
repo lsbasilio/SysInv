@@ -32,6 +32,10 @@ class CentroDeCustoDao(ABC):
         pass
 
     @abstractmethod
+    def altera_status_ccusto_ativo(self):
+        pass
+
+    @abstractmethod
     def carrega_csv(self, path):
         pass
 
