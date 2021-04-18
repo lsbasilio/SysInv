@@ -8,7 +8,8 @@ class CentroDeCustoService:
         self._dao = daofactory.create_centrodecusto_dao()
 
     def save_or_update(self, obj):
-        if self._dao.find_by_id(obj.get_ccusto_id()) is None:
+        #if self._dao.find_by_id(obj.get_ccusto_id()) is None:
+        if obj.get_ccusto_id == 0:
            self._dao.insert(obj)
         else:
            self._dao.update(obj)

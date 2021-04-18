@@ -24,6 +24,8 @@ class JanelaCcusto:
             if ccusto.get_status() == 'Ativo':
                 self.CcustoAtivo = ccusto
 
+        self.entity = self.CcustoAtivo
+
         self.window, self.event, self.values = None, None, None
 
         sg.theme(util.get_tema_janelas())
@@ -67,15 +69,27 @@ class JanelaCcusto:
         else:
             sg.popup('Centro de Custo não encontrado!')
 
-    def ativar(self, janela, id):
+    # Grava os dados do Centro de Custo
+    def grava_dados(self, janela):
+        self.service.save_or_update(self.entity)
+        self.update_form_data(janela, self.entity)
+
+    def ativar(self, janela):
         # entity = self.service.find_by_id(id)
         if self.entity is not None:
             self.entity.ativar()
-            self.service.save_or_update(self.entity)
-            self.update_form_data(janela, self.entity)
+            self.grava_dados(janela)
             sg.popup('Centro de Custo ativado com sucesso!')
         else:
             sg.popup('Centro de Custo a ativar não encontrado!')
+
+    def encerrar(self, janela):
+        if self.entity is not None:
+            self.entity.encerrar()
+            self.grava_dados(janela)
+            sg.popup('Centro de Custo finalizado com sucesso!')
+        else:
+            sg.popup('Centro de Custo a finalizar não encontrado!')
 
     def botao_ativar(self, janela, id):
         try:
@@ -87,14 +101,22 @@ class JanelaCcusto:
             elif ccusto_ativo is not None and ccusto_ativo.get_ccusto_id() != int(id):
                 if sg.popup_yes_no('Já existe outro Centro de Custo Ativo!\nDeseja ativar mesmo assim?') == 'Yes':
                     self.service.altera_status_ccusto_ativo()
-                    self.ativar(janela, id)
+                    self.ativar(janela)
             else:
-                self.ativar(janela, id)
+                self.ativar(janela)
 
         except ValueError as e:
             sg.popup(f'Erro ao ativar o Centro de Custo: {e}')
 
-
+    def botao_encerrar(self, janela, id):
+        # Verificar se Ccusto está Ativo ou Em Andamento
+        if self.entity.get_status() in ['Ativo', 'Em Andamento']:
+            if util.try_parse_to_int(id) is None:
+                sg.popup('Código de Centro de Custo inválido!')
+            else:
+                self.encerrar(janela)
+        else:
+            sg.popup('Centro de Custo não foi Inicializado!')
 
 
 
