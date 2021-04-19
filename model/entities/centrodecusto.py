@@ -81,6 +81,7 @@ class CentroDeCusto:
     def ativar(self):
         self._status = CcustoStatus.Ativo
         self._data_inicio = util.get_data_hora_atual()
+        self._data_fim = ''
 
     def encerrar(self):
         self._status = CcustoStatus.Finalizado

@@ -98,10 +98,13 @@ class JanelaCcusto:
 
             if util.try_parse_to_int(id) is None:
                 sg.popup('Código de Centro de Custo inválido!')
-            elif ccusto_ativo is not None and ccusto_ativo.get_ccusto_id() != int(id):
+            elif self.entity.get_status() != 'Finalizado' and ccusto_ativo is not None and ccusto_ativo.get_ccusto_id() != int(id):
                 if sg.popup_yes_no('Já existe outro Centro de Custo Ativo!\nDeseja ativar mesmo assim?') == 'Yes':
                     self.service.altera_status_ccusto_ativo()
                     self.ativar(janela)
+            elif self.entity.get_status() == 'Finalizado' and sg.popup_yes_no('Centro de Custo de Custo já finalizado!\nDeseja ativar novamente?') == 'Yes':
+                self.service.altera_status_ccusto_ativo()
+                self.ativar(janela)
             else:
                 self.ativar(janela)
 
@@ -109,14 +112,21 @@ class JanelaCcusto:
             sg.popup(f'Erro ao ativar o Centro de Custo: {e}')
 
     def botao_encerrar(self, janela, id):
-        # Verificar se Ccusto está Ativo ou Em Andamento
-        if self.entity.get_status() in ['Ativo', 'Em Andamento']:
-            if util.try_parse_to_int(id) is None:
-                sg.popup('Código de Centro de Custo inválido!')
+        try:
+            # Verificar se Ccusto está Ativo ou Em Andamento
+            if self.entity.get_status() in ['Ativo', 'Em Andamento']:
+                if util.try_parse_to_int(id) is None:
+                    sg.popup('Código de Centro de Custo inválido!')
+                else:
+                    self.encerrar(janela)
             else:
-                self.encerrar(janela)
-        else:
-            sg.popup('Centro de Custo não foi Inicializado!')
+                # TODO: Verificar se Centro de Custo já está encerrado
+                if self.entity.get_status() == 'Finalizado':
+                    sg.popup('Centro de Custo já finalizado!')
+                else:
+                    sg.popup('Centro de Custo não foi Inicializado!')
+        except ValueError as e:
+            sg.popup(f'Erro ao encerrar o Centro de Custo')
 
 
 
