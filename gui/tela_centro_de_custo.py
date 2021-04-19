@@ -85,6 +85,9 @@ class JanelaCcusto:
 
     def encerrar(self, janela):
         if self.entity is not None:
+            if self.entity.get_pendentes() > 0:
+                if sg.popup_yes_no('Este Centro de Custo ainda possui Bens Pendentes.\nDeseja finalizar mesmo assim?') == 'No':
+                    return
             self.entity.encerrar()
             self.grava_dados(janela)
             sg.popup('Centro de Custo finalizado com sucesso!')
@@ -98,15 +101,18 @@ class JanelaCcusto:
 
             if util.try_parse_to_int(id) is None:
                 sg.popup('Código de Centro de Custo inválido!')
-            elif self.entity.get_status() != 'Finalizado' and ccusto_ativo is not None and ccusto_ativo.get_ccusto_id() != int(id):
-                if sg.popup_yes_no('Já existe outro Centro de Custo Ativo!\nDeseja ativar mesmo assim?') == 'Yes':
-                    self.service.altera_status_ccusto_ativo()
+            elif self.entity.get_status() != 'Finalizado':
+                if ccusto_ativo is not None and ccusto_ativo.get_ccusto_id() != int(id):
+                    if sg.popup_yes_no('Já existe outro Centro de Custo Ativo!\nDeseja ativar mesmo assim?') == 'Yes':
+                        self.service.altera_status_ccusto_ativo()
+                        self.ativar(janela)
+                else:
                     self.ativar(janela)
-            elif self.entity.get_status() == 'Finalizado' and sg.popup_yes_no('Centro de Custo de Custo já finalizado!\nDeseja ativar novamente?') == 'Yes':
+            elif sg.popup_yes_no('Centro de Custo de Custo já finalizado!\nDeseja ativar novamente?') == 'Yes':
                 self.service.altera_status_ccusto_ativo()
                 self.ativar(janela)
-            else:
-                self.ativar(janela)
+            # else:
+            #     self.ativar(janela)
 
         except ValueError as e:
             sg.popup(f'Erro ao ativar o Centro de Custo: {e}')
@@ -120,13 +126,16 @@ class JanelaCcusto:
                 else:
                     self.encerrar(janela)
             else:
-                # TODO: Verificar se Centro de Custo já está encerrado
+                # Verificar se Centro de Custo já está encerrado
                 if self.entity.get_status() == 'Finalizado':
                     sg.popup('Centro de Custo já finalizado!')
                 else:
                     sg.popup('Centro de Custo não foi Inicializado!')
         except ValueError as e:
-            sg.popup(f'Erro ao encerrar o Centro de Custo')
+            sg.popup(f'Erro ao encerrar o Centro de Custo: {e}')
+
+
+        # TODO: Implementar botão Salvar
 
 
 
