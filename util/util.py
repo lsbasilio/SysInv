@@ -1,5 +1,9 @@
 from datetime import date, datetime
 
+width_combo = 45
+height_combo = 15
+
+size_input = 47
 
 def get_data_atual():
     data_atual = date.today()
@@ -17,8 +21,8 @@ def get_tema_janelas():
     return 'DarkTeal7'
 
 
-def get_size_input():
-    return 47
+# def get_size_input():
+#     return 47
 
 
 def get_id(valor):

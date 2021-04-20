@@ -16,6 +16,7 @@ from model.entities.enum.ccusto_status import CcustoStatus
 from model.entities.enum.bens_status import BensStatus
 #from model.dao.impl.locaisdaoSqLite import LocaisDaoSqLite
 from model.dao.impl.descrcomplementardaoSqLite import DescrComplementarDaoSqLite
+from util import util
 import os.path as file
 
 #ccustodao = CentroDeCustoDaoSqLite()
@@ -280,4 +281,6 @@ ccusto_ativo = service.find_ccusto_ativo()
 lista = service.find_all()
 
 print(lista.index(ccusto_ativo))
+
+print(util.width_combo)
 

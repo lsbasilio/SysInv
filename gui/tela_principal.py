@@ -37,12 +37,12 @@ class JanelaPrincipal:
 
         self.layout = [
             [sg.Image(filename=f'Imagens\BarCode.png', size=(100, 100))],
-            [sg.Button('Ativar Centro de Custo', size=(size_botao,0))],
-            [sg.Button('Iniciar Inventário', size=(size_botao,0))],
-            [sg.Button('Locais', size=(size_botao,0))],
-            [sg.Button('Descr. Padrão', size=(size_botao,0))],
-            [sg.Button('Descr. Complementar', size=(size_botao,0))],
-            [sg.Button('Consultar Bens', size=(size_botao,0))]
+            [sg.Button('Ativar Centro de Custo', size=(size_botao, 0))],
+            [sg.Button('Iniciar Inventário', size=(size_botao, 0))],
+            [sg.Button('Locais', size=(size_botao, 0))],
+            [sg.Button('Descr. Padrão', size=(size_botao, 0))],
+            [sg.Button('Descr. Complementar', size=(size_botao, 0))],
+            [sg.Button('Consultar Bens', size=(size_botao, 0))]
         ]
 
     def retorna_janela(self):
@@ -107,6 +107,7 @@ class JanelaPrincipal:
 
             # Eventos da Janela de Local
             if self.window == self.janela_local and self.event == 'locais':
+                print(self.values['locais'])
                 local_id = util.get_id(self.values['locais'])
                 self.janelalocal.get_dados(self.janela_local, local_id)
 
@@ -145,5 +146,9 @@ class JanelaPrincipal:
             # Se clicou no Botão Salvar Centro de Custo
             if self.window == self.janela_ccusto and self.event == 'Salvar':
                 self.janelaccusto.botao_salvar(self.janela_ccusto)
+
+            # Se clicou no Botão Salvar Locais
+            if self.window == self.janela_local and self.event == 'Salvar':
+                self.janelalocal.botao_salvar(self.janela_local)
 
 

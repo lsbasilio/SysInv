@@ -16,7 +16,7 @@ class Locais:
         return self._descricao
 
     def set_descricao(self, valor):
-        self._descricao = valor
+        self._descricao = valor.upper()
 
     ##### Métodos #####
 
