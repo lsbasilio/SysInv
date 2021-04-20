@@ -139,5 +139,11 @@ class JanelaPrincipal:
 
             # Se clicou no Botão Encerrar Centro de Custo
             if self.window == self.janela_ccusto and self.event == 'Encerrar':
-                ccusto_id = util.get_id(self.values['ccusto'])
-                self.janelaccusto.botao_encerrar(self.janela_ccusto, ccusto_id)
+                #ccusto_id = util.get_id(self.values['ccusto'])
+                self.janelaccusto.botao_encerrar(self.janela_ccusto)
+
+            # Se clicou no Botão Salvar Centro de Custo
+            if self.window == self.janela_ccusto and self.event == 'Salvar':
+                self.janelaccusto.botao_salvar(self.janela_ccusto)
+
+

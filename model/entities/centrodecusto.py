@@ -7,7 +7,7 @@ class CentroDeCusto:
     ##### Construtores ######
     def __init__(self,ccusto_id=0,descricao='',status=CcustoStatus.Nao_Inicializado,data_inicio='',data_fim='',pendentes=0,inventariados=0,novos=0):
         self._ccusto_id = ccusto_id
-        self._descricao = descricao
+        self._descricao = descricao.upper()
         self._status = CcustoStatus(status)
         self._data_inicio = data_inicio
         self._data_fim = data_fim
@@ -26,7 +26,7 @@ class CentroDeCusto:
         return self._descricao
 
     def set_descricao(self, valor):
-        self._descricao = valor
+        self._descricao = valor.upper()
 
     def get_status(self):
         if self._status == CcustoStatus.Nao_Inicializado:

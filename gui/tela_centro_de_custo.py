@@ -32,7 +32,7 @@ class JanelaCcusto:
 
         self.layout = [
             [sg.Text('Centro de Custo')],
-            [sg.Combo(self.lista, size=(45, 1), default_value=self.CcustoAtivo.__str__(), readonly=True, enable_events=True, key='ccusto')],
+            [sg.Combo(self.lista, size=(45, 15), default_value=self.CcustoAtivo.__str__(), readonly=True, enable_events=True, key='ccusto')],
             [sg.Text('Descrição')],
             [sg.Input(size=(self.size_input, 1), default_text=self.CcustoAtivo.get_descricao(), key='descricao')],
             [sg.Text('Data Início')],
@@ -56,11 +56,11 @@ class JanelaCcusto:
         janela.FindElement('inventariados').Update(str(ccusto.get_inventariados()))
         janela.FindElement('novos').Update(str(ccusto.get_novos()))
 
-    def get_ccusto_lista(self, id):     # Não está sendo utilizada
-        for ccusto in self.lista_entity:
-            if ccusto.get_ccusto_id() == int(id):
-                return ccusto
-        return None
+    # def get_ccusto_lista(self, id):     # Não está sendo utilizada
+    #     for ccusto in self.lista_entity:
+    #         if ccusto.get_ccusto_id() == int(id):
+    #             return ccusto
+    #     return None
 
     def get_dados(self, janela, id):
         self.entity = self.service.find_by_id(int(id))
@@ -75,32 +75,34 @@ class JanelaCcusto:
         self.update_form_data(janela, self.entity)
 
     def ativar(self, janela):
-        # entity = self.service.find_by_id(id)
-        if self.entity is not None:
             self.entity.ativar()
             self.grava_dados(janela)
             sg.popup('Centro de Custo ativado com sucesso!')
-        else:
-            sg.popup('Centro de Custo a ativar não encontrado!')
 
     def encerrar(self, janela):
-        if self.entity is not None:
-            if self.entity.get_pendentes() > 0:
-                if sg.popup_yes_no('Este Centro de Custo ainda possui Bens Pendentes.\nDeseja finalizar mesmo assim?') == 'No':
-                    return
-            self.entity.encerrar()
-            self.grava_dados(janela)
-            sg.popup('Centro de Custo finalizado com sucesso!')
-        else:
-            sg.popup('Centro de Custo a finalizar não encontrado!')
+        if self.entity.get_pendentes() > 0:
+            if sg.popup_yes_no('Este Centro de Custo ainda possui Bens Pendentes.\nDeseja finalizar mesmo assim?') == 'No':
+                return
+        self.entity.encerrar()
+        self.grava_dados(janela)
+        sg.popup('Centro de Custo finalizado com sucesso!')
+
+    def salvar(self, janela, descricaoatual, descricaonova):
+        self.entity.set_descricao(descricaonova)
+        x = self.lista.index(descricaoatual)
+        self.lista[x] = self.entity
+        janela.FindElement('ccusto').Update(values=self.lista, size=(45, 15), set_to_index=x, readonly=True)
+        self.grava_dados(janela)
+
+        sg.popup('Dados do Centro de Custo salvos com sucesso!')
 
     def botao_ativar(self, janela, id):
         try:
 
             ccusto_ativo = self.service.find_ccusto_ativo()
 
-            if util.try_parse_to_int(id) is None:
-                sg.popup('Código de Centro de Custo inválido!')
+            if self.entity is None:
+                sg.popup('Centro de Custo a ativar não encontrado!')
             elif self.entity.get_status() != 'Finalizado':
                 if ccusto_ativo is not None and ccusto_ativo.get_ccusto_id() != int(id):
                     if sg.popup_yes_no('Já existe outro Centro de Custo Ativo!\nDeseja ativar mesmo assim?') == 'Yes':
@@ -111,19 +113,17 @@ class JanelaCcusto:
             elif sg.popup_yes_no('Centro de Custo de Custo já finalizado!\nDeseja ativar novamente?') == 'Yes':
                 self.service.altera_status_ccusto_ativo()
                 self.ativar(janela)
-            # else:
-            #     self.ativar(janela)
 
         except ValueError as e:
             sg.popup(f'Erro ao ativar o Centro de Custo: {e}')
 
-    def botao_encerrar(self, janela, id):
+    def botao_encerrar(self, janela):
         try:
+
+            if self.entity is None:
+                sg.popup('Centro de Custo a encerrar não encontrado!')
             # Verificar se Ccusto está Ativo ou Em Andamento
-            if self.entity.get_status() in ['Ativo', 'Em Andamento']:
-                if util.try_parse_to_int(id) is None:
-                    sg.popup('Código de Centro de Custo inválido!')
-                else:
+            elif self.entity.get_status() in ['Ativo', 'Em Andamento']:
                     self.encerrar(janela)
             else:
                 # Verificar se Centro de Custo já está encerrado
@@ -131,16 +131,17 @@ class JanelaCcusto:
                     sg.popup('Centro de Custo já finalizado!')
                 else:
                     sg.popup('Centro de Custo não foi Inicializado!')
+
         except ValueError as e:
             sg.popup(f'Erro ao encerrar o Centro de Custo: {e}')
 
+    # TODO: Implementar botão Salvar
+    def botao_salvar(self, janela):
+        print(janela.FindElement('ccusto').Get())
+        descricaoatual = janela.FindElement('ccusto').Get()
+        descricaonova = janela.FindElement('descricao').get()
 
-        # TODO: Implementar botão Salvar
-
-
-
-
-
-
-
-
+        if descricaonova is None or descricaonova == '':
+            sg.popup('O Campo Descrição está em branco!')
+        else:
+            self.salvar(janela, descricaoatual, descricaonova)
