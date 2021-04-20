@@ -3,6 +3,7 @@ from gui.tela_centro_de_custo import JanelaCcusto
 from gui.tela_locais import JanelaLocais
 from gui.tela_descr_padrao import JanelaDescrPadrao
 from gui.tela_descr_complementar import JanelaDescrComplementar
+from gui.tela_novo import JanelaNovo
 from util import util
 
 
@@ -33,6 +34,10 @@ class JanelaPrincipal:
         self.janela_descr_compl = None
         self.janeladescrcompl = None  # Objeto da classe JanelaDescrComplementar
 
+        # Criar as janelas de Novo
+        self.janela_novo = None
+        self.janelanovo = None
+
         sg.theme(util.get_tema_janelas())
 
         self.layout = [
@@ -50,6 +55,7 @@ class JanelaPrincipal:
         self.janela = sg.Window('Tela Principal', layout=self.layout, finalize=True)
         self.janela_ccusto = None
         self.janela_local = None
+        self.janela_novo = None
         self.janela_descr_padrao = None
         self.janela_descr_compl = None
         return self.janela
@@ -77,6 +83,11 @@ class JanelaPrincipal:
             if self.window == self.janela_local and self.event == sg.WINDOW_CLOSED:
                 self.janela_local.hide()
                 self.janela.un_hide()
+
+            # Quando a janela de Novo for fechada
+            if self.window == self.janela_novo and self.event == sg.WINDOW_CLOSED:
+                self.janela_novo.hide()
+                self.janela_local.un_hide()
 
             # Quando a janela de Descr Padrão for fechada
             if self.window == self.janela_descr_padrao and self.event == sg.WINDOW_CLOSED:
@@ -153,6 +164,16 @@ class JanelaPrincipal:
             # Se clicou no Botão Excluir Locais
             if self.window == self.janela_local and self.event == 'Excluir':
                 self.janelalocal.botao_excluir(self.janela_local)
+
+            # Se clicou no Botão Novo Local
+            if self.window == self.janela_local and self.event == 'Novo':
+                self.janela_local.hide()
+                self.janelanovo = JanelaNovo(self.janelalocal.entity, self.janelalocal.service, self.janelalocal.lista)
+                self.janela_novo = sg.Window('Novo Local', layout=self.janelanovo.layout, finalize=True)
+
+            # Se clicou no Botão Salvar Novo
+            if self.window == self.janela_novo and self.event == 'Salvar':
+                self.janelanovo.botao_salvar(self.janela_novo, self.janela_local)
 
 
 

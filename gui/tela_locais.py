@@ -10,11 +10,13 @@ class JanelaLocais:
     entity = Locais()
     service = LocaisService()
 
+    lista = []
+
     size_input = util.size_input
 
     def __init__(self):
 
-        self.lista = []
+
         self.lista_entity = self.service.find_all()
 
         # Lista para popular a combobox

@@ -8,8 +8,8 @@ class LocaisService:
         self._dao = daofactory.create_locais_dao()
 
     def save_or_update(self, obj):
-       # if self._dao.find_by_id(obj.get_local_id()) is None:
-       if obj.get_local_id == 0:
+        # if obj.get_local_id == 0:   # Somente para Campos com auto-incremento
+       if self._dao.find_by_id(obj.get_local_id()) is None:
         self._dao.insert(obj)
        else:
         self._dao.update(obj)
