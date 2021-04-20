@@ -107,7 +107,6 @@ class JanelaPrincipal:
 
             # Eventos da Janela de Local
             if self.window == self.janela_local and self.event == 'locais':
-                print(self.values['locais'])
                 local_id = util.get_id(self.values['locais'])
                 self.janelalocal.get_dados(self.janela_local, local_id)
 
@@ -150,5 +149,11 @@ class JanelaPrincipal:
             # Se clicou no Botão Salvar Locais
             if self.window == self.janela_local and self.event == 'Salvar':
                 self.janelalocal.botao_salvar(self.janela_local)
+
+            # Se clicou no Botão Excluir Locais
+            if self.window == self.janela_local and self.event == 'Excluir':
+                self.janelalocal.botao_excluir(self.janela_local)
+
+
 
 

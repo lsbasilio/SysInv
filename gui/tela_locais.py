@@ -59,8 +59,17 @@ class JanelaLocais:
         self.lista[x] = self.entity.__str__()
         janela.FindElement('locais').Update(values=self.lista, size=(util.width_combo, util.height_combo), set_to_index=x, readonly=True)
         self.grava_dados(janela)
-
         sg.popup('Dados do Local salvos com sucesso!')
+
+    def excluir(self, janela):
+        self.lista.remove(self.entity.__str__())    # remove da Lista
+        self.service.remove(self.entity)    # remove do Banco
+        janela.FindElement('locais').Update(values=self.lista, size=(util.width_combo, util.height_combo),
+                                            set_to_index=0, readonly=True)
+
+        self.entity = self.lista_entity[0]
+        self.update_form_data(janela, self.entity)
+        sg.popup('Local excluído com sucesso!')
 
     # Botão Salvar Local
     def botao_salvar(self, janela):
@@ -72,4 +81,9 @@ class JanelaLocais:
             sg.popup('O Campo Descrição está em branco!')
         else:
             self.salvar(janela, descricaoatual, descricaonova)
+
+    def botao_excluir(self, janela):
+        if sg.popup_yes_no('Deseja excluir o Local?') == 'Yes':
+            self.excluir(janela)
+
 
