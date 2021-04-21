@@ -87,7 +87,10 @@ class JanelaPrincipal:
             # Quando a janela de Novo for fechada
             if self.window == self.janela_novo and self.event == sg.WINDOW_CLOSED:
                 self.janela_novo.hide()
-                self.janela_local.un_hide()
+                if self.janela_local is not None:
+                    self.janela_local.un_hide()
+                elif self.janela_descr_padrao is not None:
+                    self.janela_descr_padrao.un_hide()
 
             # Quando a janela de Descr Padrão for fechada
             if self.window == self.janela_descr_padrao and self.event == sg.WINDOW_CLOSED:
@@ -173,13 +176,24 @@ class JanelaPrincipal:
 
             # Se clicou no Botão Salvar Novo
             if self.window == self.janela_novo and self.event == 'Salvar':
-                self.janelanovo.botao_salvar(self.janela_novo, self.janela_local)
+                if self.janela_local is not None:
+                    self.janelanovo.botao_salvar(self.janela_novo, self.janela_local)
+                elif self.janela_descr_padrao is not None:
+                    self.janelanovo.botao_salvar(self.janela_novo, self.janela_descr_padrao)
 
             # Se clicou no Botão Salvar Descr Padrao
             if self.window == self.janela_descr_padrao and self.event == 'Salvar':
                 self.janeladescrpadrao.botao_salvar(self.janela_descr_padrao)
 
-            # Se clicou no Botão Excluir DEscr Padrao
+            # Se clicou no Botão Excluir Descr Padrao
             if self.window == self.janela_descr_padrao and self.event == 'Excluir':
                 self.janeladescrpadrao.botao_excluir(self.janela_descr_padrao)
+
+            # Se clicou no Botão Nova Descr Padrao
+            if self.window == self.janela_descr_padrao and self.event == 'Novo':
+                self.janela_descr_padrao.hide()
+                self.janelanovo = JanelaNovo(self.janeladescrpadrao.entity,
+                                             self.janeladescrpadrao.service,
+                                             self.janeladescrpadrao.lista)
+                self.janela_novo = sg.Window('Nova Descrição Padrão', layout=self.janelanovo.layout, finalize=True)
 

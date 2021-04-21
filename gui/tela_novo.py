@@ -37,26 +37,43 @@ class JanelaNovo:
             x = self.lista.index(self.entity.__str__())
             janela_origem.FindElement('locais').Update(values=self.lista, size=(util.width_combo, util.height_combo), set_to_index=x, readonly=True)
             janela_origem.FindElement('descricao').Update(self.entity.get_descricao())
-            # TODO: tentar fazer o sort na Lista
             sg.popup('Local cadastrado com Sucesso!')
+        elif janela_origem.Title == 'Descrição Padrão':
+            self.lista.append(self.entity.__str__())
+            x = self.lista.index(self.entity.__str__())
+            janela_origem.FindElement('descrpadrao').Update(values=self.lista, size=(util.width_combo, util.height_combo),
+                                                       set_to_index=x, readonly=True)
+            janela_origem.FindElement('descricao').Update(self.entity.get_descricao())
+            sg.popup('Descrição Padrão cadastrada com Sucesso!')
 
     def botao_salvar(self, janela, janela_origem):
         print(janela.FindElement('codigo').get())
         print(janela.FindElement('descricao').get())
 
-        codigo = janela.FindElement('codigo').get()
+        codigo = ''
+
+        if janela_origem.Title == 'Locais':
+            codigo = int(janela.FindElement('codigo').get())
+        elif janela_origem.Title == 'Descrição Padrão':
+            codigo = janela.FindElement('codigo').get().upper()
+
         descricao = janela.FindElement('descricao').get()
+
+
+        # print(type(codigo))
 
         if codigo is None or codigo == '':
             sg.popup('Código não informado!')
         elif descricao is None or descricao == '':
             sg.popup('Descrição não informada!')
         else:
-            if self.service.find_by_id(int(codigo)) is not None:
+            if self.service.find_by_id(codigo) is not None:
                 sg.popup('Código informado já existe!\nInforme outro código')
             else:
                 if janela_origem.Title == 'Locais':
-                    self.entity.set_local_id(int(codigo))
+                    self.entity.set_local_id(codigo)
+                elif janela_origem.Title == 'Descrição Padrão':
+                    self.entity.set_descricao_id(codigo)
                 self.entity.set_descricao(descricao)
                 self.salvar(janela, janela_origem)
                 janela.hide()

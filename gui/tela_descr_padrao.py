@@ -32,9 +32,9 @@ class JanelaDescrPadrao:
             [sg.Text('Código Descrição Padrão')],
             [sg.Combo(self.lista, size=(self.size_input - 2, util.height_combo), default_value=self.lista[0], readonly=True, enable_events=True, key='descrpadrao')],
             [sg.Text('Descrição')],
-            #[sg.Input(size=(self.size_input, 1), default_text=self.lista_entity[0].get_descricao(), key='descricaoantiga')],
-            [sg.Button('Novo', size=(8, 1)), sg.Button('Salvar', size=(8, 1)), sg.Button('Excluir', size=(8, 1))],
-            [sg.Multiline(enter_submits=False, autoscroll=True, size=(self.size_input - 2, 1), default_text=self.lista_entity[0].get_descricao(), key='descricao')]
+            [sg.Multiline(enter_submits=False, autoscroll=True, size=(self.size_input - 2, 5),
+                          default_text=self.lista_entity[0].get_descricao(), key='descricao')],
+            [sg.Button('Novo', size=(8, 1)), sg.Button('Salvar', size=(8, 1)), sg.Button('Excluir', size=(8, 1))]
         ]
 
     def get_dados(self, janela, id):
