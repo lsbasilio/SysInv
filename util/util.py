@@ -38,3 +38,12 @@ def try_parse_to_int(string):
         return None
 
 
+def retira_caracteres_especiais(texto):
+    aux = ''
+    for letra in texto:
+        if letra not in ['\n', '\t', '\r']:
+            aux += letra
+
+    return aux
+
+

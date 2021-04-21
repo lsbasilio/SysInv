@@ -16,7 +16,6 @@ class JanelaLocais:
 
     def __init__(self):
 
-
         self.lista_entity = self.service.find_all()
 
         # Lista para popular a combobox

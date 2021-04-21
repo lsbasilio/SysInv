@@ -175,6 +175,11 @@ class JanelaPrincipal:
             if self.window == self.janela_novo and self.event == 'Salvar':
                 self.janelanovo.botao_salvar(self.janela_novo, self.janela_local)
 
+            # Se clicou no Botão Salvar Descr Padrao
+            if self.window == self.janela_descr_padrao and self.event == 'Salvar':
+                self.janeladescrpadrao.botao_salvar(self.janela_descr_padrao)
 
-
+            # Se clicou no Botão Excluir DEscr Padrao
+            if self.window == self.janela_descr_padrao and self.event == 'Excluir':
+                self.janeladescrpadrao.botao_excluir(self.janela_descr_padrao)
 

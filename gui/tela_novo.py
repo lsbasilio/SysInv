@@ -37,6 +37,7 @@ class JanelaNovo:
             x = self.lista.index(self.entity.__str__())
             janela_origem.FindElement('locais').Update(values=self.lista, size=(util.width_combo, util.height_combo), set_to_index=x, readonly=True)
             janela_origem.FindElement('descricao').Update(self.entity.get_descricao())
+            # TODO: tentar fazer o sort na Lista
             sg.popup('Local cadastrado com Sucesso!')
 
     def botao_salvar(self, janela, janela_origem):
