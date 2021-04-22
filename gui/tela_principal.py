@@ -67,157 +67,166 @@ class JanelaPrincipal:
 
             self.window, self.event, self.values = sg.read_all_windows()
 
-            # Quando a janela principal for fechada
-            if self.window == self.janela and self.event == sg.WINDOW_CLOSED:
-                print('Fechou')
-                self.janela.close()
-                exit()
-                break
+            # TODO: Agrupar os eventos das janelas
 
+            ###### Eventos da janela principal #######
+            if self.window == self.janela:
+                if self.event == sg.WINDOW_CLOSED:
+                    self.janela.close()
+                    exit()
+                    break
+
+                # Quando queremos ir para janela de Centro de Custo
+                if self.event == 'Ativar Centro de Custo':
+                    self.janela.hide()
+                    self.janelaccusto = JanelaCcusto()
+                    self.janela_ccusto = sg.Window('Centro de Custo', layout=self.janelaccusto.layout,
+                                                   finalize=True)
+
+                # Quando queremos ir para janela de Local
+                if self.event == 'Locais':
+                    self.janela.hide()
+                    self.janelalocal = JanelaLocais()
+                    self.janela_local = sg.Window('Locais', layout=self.janelalocal.layout, finalize=True)
+
+                # Quando queremos ir para janela de Descr Padrão
+                if self.event == 'Descr. Padrão':
+                    self.janela.hide()
+                    self.janeladescrpadrao = JanelaDescrPadrao()
+                    self.janela_descr_padrao = sg.Window('Descrição Padrão', layout=self.janeladescrpadrao.layout, finalize=True)
+
+                # Quando queremos ir para janela de Descr Complementar
+                if self.event == 'Descr. Complementar':
+                    self.janela.hide()
+                    self.janeladescrcompl = JanelaDescrComplementar()
+                    self.janela_descr_compl = sg.Window('Descrição Complementar', layout=self.janeladescrcompl.layout, finalize=True)
+
+            ###### Eventos da janela Centro de Custo #######
             # Quando a janela de Centro de Custo for fechada
-            if self.window == self.janela_ccusto and self.event == sg.WINDOW_CLOSED:
-                self.janela_ccusto.hide()
-                self.janela.un_hide()
+            if self.window == self.janela_ccusto:
+                if self.event == sg.WINDOW_CLOSED:
+                    self.janela_ccusto.hide()
+                    self.janela.un_hide()
 
+                # Eventos da Janela de Centro de Custo
+                if self.event == 'ccusto':
+                    ccusto_id = util.get_id(self.values['ccusto'])
+                    self.janelaccusto.get_dados(self.janela_ccusto, ccusto_id)
+
+                # Se clicou no Botão Ativar Centro de Custo
+                if self.event == 'Ativar':
+                    ccusto_id = util.get_id(self.values['ccusto'])
+                    self.janelaccusto.botao_ativar(self.janela_ccusto, ccusto_id)
+
+                # Se clicou no Botão Encerrar Centro de Custo
+                if self.event == 'Encerrar':
+                    #ccusto_id = util.get_id(self.values['ccusto'])
+                    self.janelaccusto.botao_encerrar(self.janela_ccusto)
+
+                # Se clicou no Botão Salvar Centro de Custo
+                if self.event == 'Salvar':
+                    self.janelaccusto.botao_salvar(self.janela_ccusto)
+
+            ###### Eventos da janela Locais #######
             # Quando a janela de Local for fechada
-            if self.window == self.janela_local and self.event == sg.WINDOW_CLOSED:
-                self.janela_local.hide()
-                self.janela.un_hide()
+            if self.window == self.janela_local:
+                if self.event == sg.WINDOW_CLOSED:
+                    self.janela_local.hide()
+                    self.janela.un_hide()
+
+                # Eventos da Janela de Local
+                if self.event == 'locais':
+                    local_id = util.get_id(self.values['locais'])
+                    self.janelalocal.get_dados(self.janela_local, local_id)
+
+                # Se clicou no Botão Salvar Locais
+                if self.event == 'Salvar':
+                    self.janelalocal.botao_salvar(self.janela_local)
+
+                # Se clicou no Botão Excluir Locais
+                if self.event == 'Excluir':
+                    self.janelalocal.botao_excluir(self.janela_local)
+
+                # Se clicou no Botão Novo Local
+                if self.event == 'Novo':
+                    self.janela_local.hide()
+                    self.janelanovo = JanelaNovo(self.janelalocal.entity, self.janelalocal.service, self.janelalocal.lista)
+                    self.janela_novo = sg.Window('Novo Local', layout=self.janelanovo.layout, finalize=True)
+
+            ###### Eventos da janela Descr Padrao #######
+            # Quando a janela de Descr Padrão for fechada
+            if self.window == self.janela_descr_padrao:
+                if self.event == sg.WINDOW_CLOSED:
+                    self.janela_descr_padrao.hide()
+                    self.janela.un_hide()
+
+                # Eventos da Janela de Descr Padrão
+                if self.event == 'descrpadrao':
+                    descr_id = util.get_id(self.values['descrpadrao'])
+                    self.janeladescrpadrao.get_dados(self.janela_descr_padrao, descr_id)
+
+                # Se clicou no Botão Salvar Descr Padrao
+                if self.event == 'Salvar':
+                    self.janeladescrpadrao.botao_salvar(self.janela_descr_padrao)
+
+                # Se clicou no Botão Excluir Descr Padrao
+                if self.event == 'Excluir':
+                    self.janeladescrpadrao.botao_excluir(self.janela_descr_padrao)
+
+                # Se clicou no Botão Nova Descr Padrao
+                if self.event == 'Novo':
+                    self.janela_descr_padrao.hide()
+                    self.janelanovo = JanelaNovo(self.janeladescrpadrao.entity,
+                                                 self.janeladescrpadrao.service,
+                                                 self.janeladescrpadrao.lista)
+                    self.janela_novo = sg.Window('Nova Descrição Padrão', layout=self.janelanovo.layout, finalize=True)
+
+            ###### Eventos da janela Descr Complementar #######
+            # Quando a janela de Descr Complementar for fechada
+            if self.window == self.janela_descr_compl:
+                if self.event == sg.WINDOW_CLOSED:
+                    self.janela_descr_compl.hide()
+                    self.janela.un_hide()
+
+                # Eventos da Janela de Descr Complementar
+                if self.event == 'descrcomplementar':
+                    descr_id = util.get_id(self.values['descrcomplementar'])
+                    self.janeladescrcompl.get_dados(self.janela_descr_compl, descr_id)
+
+                # Se clicou no Botão Salvar Descr Complementar
+                if self.event == 'Salvar':
+                    self.janeladescrcompl.botao_salvar(self.janela_descr_compl)
+
+                # Se clicou no Botão Excluir Descr Complementar
+                if self.event == 'Excluir':
+                    self.janeladescrcompl.botao_excluir(self.janela_descr_compl)
+
+                # Se clicou no Botão Nova Descr Complementar
+                if self.event == 'Novo':
+                    self.janela_descr_compl.hide()
+                    self.janelanovo = JanelaNovo(self.janeladescrcompl.entity,
+                                                 self.janeladescrcompl.service,
+                                                 self.janeladescrcompl.lista)
+                    self.janela_novo = sg.Window('Nova Descrição Complementar', layout=self.janelanovo.layout, finalize=True)
+
+            ###### Eventos da janela Novo #######
 
             # Quando a janela de Novo for fechada
-            if self.window == self.janela_novo and (self.event == sg.WINDOW_CLOSED or self.event == 'Cancelar'):
-                self.janela_novo.hide()
-                if self.janela_local is not None:
-                    self.janela_local.un_hide()
-                elif self.janela_descr_padrao is not None:
-                    self.janela_descr_padrao.un_hide()
-                elif self.janela_descr_compl is not None:
-                    self.janela_descr_compl.un_hide()
+            if self.window == self.janela_novo:
+                if (self.event == sg.WINDOW_CLOSED or self.event == 'Cancelar'):
+                    self.janela_novo.hide()
+                    if self.janela_local is not None:
+                        self.janela_local.un_hide()
+                    elif self.janela_descr_padrao is not None:
+                        self.janela_descr_padrao.un_hide()
+                    elif self.janela_descr_compl is not None:
+                        self.janela_descr_compl.un_hide()
 
-
-            # Quando a janela de Descr Padrão for fechada
-            if self.window == self.janela_descr_padrao and self.event == sg.WINDOW_CLOSED:
-                self.janela_descr_padrao.hide()
-                self.janela.un_hide()
-
-            # Quando a janela de Descr Complementar for fechada
-            if self.window == self.janela_descr_compl and self.event == sg.WINDOW_CLOSED:
-                self.janela_descr_compl.hide()
-                self.janela.un_hide()
-
-            # Quando queremos ir para janela de Centro de Custo
-            if self.window == self.janela and self.event == 'Ativar Centro de Custo':
-                self.janela.hide()
-                self.janelaccusto = JanelaCcusto()
-                self.janela_ccusto = sg.Window('Centro de Custo', layout=self.janelaccusto.layout, finalize=True)
-
-            # Eventos da Janela de Centro de Custo
-            if self.window == self.janela_ccusto and self.event == 'ccusto':
-                ccusto_id = util.get_id(self.values['ccusto'])
-                self.janelaccusto.get_dados(self.janela_ccusto, ccusto_id)
-
-            # Quando queremos ir para janela de Local
-            if self.window == self.janela and self.event == 'Locais':
-                self.janela.hide()
-                self.janelalocal = JanelaLocais()
-                self.janela_local = sg.Window('Locais', layout=self.janelalocal.layout, finalize=True)
-
-            # Eventos da Janela de Local
-            if self.window == self.janela_local and self.event == 'locais':
-                local_id = util.get_id(self.values['locais'])
-                self.janelalocal.get_dados(self.janela_local, local_id)
-
-            # Quando queremos ir para janela de Descr Padrão
-            if self.window == self.janela and self.event == 'Descr. Padrão':
-                self.janela.hide()
-                self.janeladescrpadrao = JanelaDescrPadrao()
-                self.janela_descr_padrao = sg.Window('Descrição Padrão', layout=self.janeladescrpadrao.layout, finalize=True)
-
-            # Eventos da Janela de Descr Padrão
-            if self.window == self.janela_descr_padrao and self.event == 'descrpadrao':
-                descr_id = util.get_id(self.values['descrpadrao'])
-                self.janeladescrpadrao.get_dados(self.janela_descr_padrao, descr_id)
-
-            # Quando queremos ir para janela de Descr Complementar
-            if self.window == self.janela and self.event == 'Descr. Complementar':
-                self.janela.hide()
-                self.janeladescrcompl = JanelaDescrComplementar()
-                self.janela_descr_compl = sg.Window('Descrição Complementar', layout=self.janeladescrcompl.layout, finalize=True)
-
-            # Eventos da Janela de Descr Complementar
-            if self.window == self.janela_descr_compl and self.event == 'descrcomplementar':
-                descr_id = util.get_id(self.values['descrcomplementar'])
-                self.janeladescrcompl.get_dados(self.janela_descr_compl, descr_id)
-
-            # Se clicou no Botão Ativar Centro de Custo
-            if self.window == self.janela_ccusto and self.event == 'Ativar':
-                ccusto_id = util.get_id(self.values['ccusto'])
-                self.janelaccusto.botao_ativar(self.janela_ccusto, ccusto_id)
-
-            # Se clicou no Botão Encerrar Centro de Custo
-            if self.window == self.janela_ccusto and self.event == 'Encerrar':
-                #ccusto_id = util.get_id(self.values['ccusto'])
-                self.janelaccusto.botao_encerrar(self.janela_ccusto)
-
-            # Se clicou no Botão Salvar Centro de Custo
-            if self.window == self.janela_ccusto and self.event == 'Salvar':
-                self.janelaccusto.botao_salvar(self.janela_ccusto)
-
-            # Se clicou no Botão Salvar Locais
-            if self.window == self.janela_local and self.event == 'Salvar':
-                self.janelalocal.botao_salvar(self.janela_local)
-
-            # Se clicou no Botão Excluir Locais
-            if self.window == self.janela_local and self.event == 'Excluir':
-                self.janelalocal.botao_excluir(self.janela_local)
-
-            # Se clicou no Botão Novo Local
-            if self.window == self.janela_local and self.event == 'Novo':
-                self.janela_local.hide()
-                self.janelanovo = JanelaNovo(self.janelalocal.entity, self.janelalocal.service, self.janelalocal.lista)
-                self.janela_novo = sg.Window('Novo Local', layout=self.janelanovo.layout, finalize=True)
-
-            # Se clicou no Botão Salvar Novo
-            if self.window == self.janela_novo and self.event == 'Salvar':
-                if self.janela_local is not None:
-                    self.janelanovo.botao_salvar(self.janela_novo, self.janela_local)
-                elif self.janela_descr_padrao is not None:
-                    self.janelanovo.botao_salvar(self.janela_novo, self.janela_descr_padrao)
-                elif self.janela_descr_compl is not None:
-                    self.janelanovo.botao_salvar(self.janela_novo, self.janela_descr_compl)
-
-            # Se clicou no Botão Salvar Descr Padrao
-            if self.window == self.janela_descr_padrao and self.event == 'Salvar':
-                self.janeladescrpadrao.botao_salvar(self.janela_descr_padrao)
-
-            # Se clicou no Botão Excluir Descr Padrao
-            if self.window == self.janela_descr_padrao and self.event == 'Excluir':
-                self.janeladescrpadrao.botao_excluir(self.janela_descr_padrao)
-
-            # Se clicou no Botão Nova Descr Padrao
-            if self.window == self.janela_descr_padrao and self.event == 'Novo':
-                self.janela_descr_padrao.hide()
-                self.janelanovo = JanelaNovo(self.janeladescrpadrao.entity,
-                                             self.janeladescrpadrao.service,
-                                             self.janeladescrpadrao.lista)
-                self.janela_novo = sg.Window('Nova Descrição Padrão', layout=self.janelanovo.layout, finalize=True)
-
-            # TODO: Finalizar janela Descr Complementar
-
-            # Se clicou no Botão Salvar Descr Complementar
-            if self.window == self.janela_descr_compl and self.event == 'Salvar':
-                self.janeladescrcompl.botao_salvar(self.janela_descr_compl)
-
-            # Se clicou no Botão Excluir Descr Complementar
-            if self.window == self.janela_descr_compl and self.event == 'Excluir':
-                self.janeladescrcompl.botao_excluir(self.janela_descr_compl)
-
-            # Se clicou no Botão Nova Descr Complementar
-            if self.window == self.janela_descr_compl and self.event == 'Novo':
-                self.janela_descr_compl.hide()
-                self.janelanovo = JanelaNovo(self.janeladescrcompl.entity,
-                                             self.janeladescrcompl.service,
-                                             self.janeladescrcompl.lista)
-                self.janela_novo = sg.Window('Nova Descrição Complementar', layout=self.janelanovo.layout, finalize=True)
-
-    # TODO: Implementar Botão Cancelar
+                # Se clicou no Botão Salvar Novo
+                if self.window == self.janela_novo and self.event == 'Salvar':
+                    if self.janela_local is not None:
+                        self.janelanovo.botao_salvar(self.janela_novo, self.janela_local)
+                    elif self.janela_descr_padrao is not None:
+                        self.janelanovo.botao_salvar(self.janela_novo, self.janela_descr_padrao)
+                    elif self.janela_descr_compl is not None:
+                        self.janelanovo.botao_salvar(self.janela_novo, self.janela_descr_compl)
