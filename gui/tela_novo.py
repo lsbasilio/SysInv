@@ -26,7 +26,7 @@ class JanelaNovo:
             [sg.Button('Salvar', size=(8, 1)), sg.Button('Cancelar', size=(8, 1))]
         ]
 
-    def salvar(self, janela, janela_origem):
+    def salvar(self, janela_origem):
 
         self.service.save_or_update(self.entity)
 
@@ -55,32 +55,43 @@ class JanelaNovo:
             janela_origem.FindElement('descricao').Update(self.entity.get_descricao())
             sg.popup('Descrição Complementar cadastrada com Sucesso!')
 
+        elif janela_origem.Title == 'Centro de Custo':
+                self.lista.append(self.entity.__str__())
+                x = self.lista.index(self.entity.__str__())
+                janela_origem.FindElement('ccusto').Update(values=self.lista,
+                                                           size=(util.width_combo, util.height_combo), set_to_index=x,
+                                                           readonly=True)
+                janela_origem.FindElement('descricao').Update(self.entity.get_descricao())
+                sg.popup('Centro de Custo cadastrado com Sucesso!')
+
     def botao_salvar(self, janela, janela_origem):
         # print(janela.FindElement('codigo').get())
         # print(janela.FindElement('descricao').get())
 
-        codigo = ''
-
-        if janela_origem.Title == 'Locais':
-            codigo = int(janela.FindElement('codigo').get())
-        elif janela_origem.Title == 'Descrição Padrão':
-            codigo = janela.FindElement('codigo').get().upper()
-        elif janela_origem.Title == 'Descrição Complementar':
-            codigo = janela.FindElement('codigo').get().upper()
-
+        codigo = janela.FindElement('codigo').get()
         descricao = janela.FindElement('descricao').get()
-
-        # print(type(codigo))
 
         if codigo is None or codigo == '':
             sg.popup('Código não informado!')
         elif descricao is None or descricao == '':
             sg.popup('Descrição não informada!')
         else:
+
+            if janela_origem.Title == 'Centro de Custo':
+                codigo = int(janela.FindElement('codigo').get())
+            elif janela_origem.Title == 'Locais':
+                codigo = int(janela.FindElement('codigo').get())
+            elif janela_origem.Title == 'Descrição Padrão':
+                codigo = janela.FindElement('codigo').get().upper()
+            elif janela_origem.Title == 'Descrição Complementar':
+                codigo = janela.FindElement('codigo').get().upper()
+
             if self.service.find_by_id(codigo) is not None:
                 sg.popup('Código informado já existe!\nInforme outro código')
             else:
-                if janela_origem.Title == 'Locais':
+                if janela_origem.Title == 'Centro de Custo':
+                    self.entity.set_ccusto_id(codigo)
+                elif janela_origem.Title == 'Locais':
                     self.entity.set_local_id(codigo)
                 elif janela_origem.Title == 'Descrição Padrão':
                     self.entity.set_descricao_id(codigo)
@@ -88,7 +99,7 @@ class JanelaNovo:
                     self.entity.set_descricao_id(codigo)
 
                 self.entity.set_descricao(descricao)
-                self.salvar(janela, janela_origem)
+                self.salvar(janela_origem)
                 janela.hide()
                 janela_origem.un_hide()
 

@@ -8,5 +8,3 @@ class StartAplicacao:
     janelaprincipal.janela = janelaprincipal.retorna_janela()
     janelaprincipal.iniciar_tela()
 
-
-
