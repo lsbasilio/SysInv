@@ -43,8 +43,6 @@ class JanelaLocais:
         else:
             sg.popup('Local não encontrado!')
 
-    # TODO: Finalizar Tela de Locais
-
     def update_form_data(self, janela, locais):
         janela.FindElement('descricao').Update(locais.get_descricao())
 

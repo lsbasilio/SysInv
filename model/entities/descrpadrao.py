@@ -10,7 +10,7 @@ class DescrPadrao:
         return self._descricao_id
 
     def set_descricao_id(self, valor):
-        self._descricao_id = valor
+        self._descricao_id = valor.upper()
 
     def get_descricao(self):
         return self._descricao

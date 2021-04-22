@@ -10,13 +10,13 @@ class DescrComplementar:
         return self._descricao_id
 
     def set_descricao_id(self, valor):
-        self._descricao_id = valor
+        self._descricao_id = valor.upper()
 
     def get_descricao(self):
         return self._descricao
 
     def set_descricao(self, valor):
-        self._descricao = valor
+        self._descricao = valor.upper()
 
     def __str__(self):
         return self._descricao_id + ' - ' + self._descricao

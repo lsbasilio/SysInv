@@ -75,10 +75,7 @@ class JanelaDescrPadrao:
         descricaoatual = janela.FindElement('descrpadrao').Get()
         descricaonova = janela.FindElement('descricao').get()
 
-
-#        print("'" + texto + "'")
         descricaonova = util.retira_caracteres_especiais(descricaonova)
-        print("'" + descricaonova + "'")
 
         if descricaonova is None or descricaonova == '':
             sg.popup('O Campo Descrição está em branco!')

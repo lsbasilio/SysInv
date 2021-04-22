@@ -85,12 +85,15 @@ class JanelaPrincipal:
                 self.janela.un_hide()
 
             # Quando a janela de Novo for fechada
-            if self.window == self.janela_novo and self.event == sg.WINDOW_CLOSED:
+            if self.window == self.janela_novo and (self.event == sg.WINDOW_CLOSED or self.event == 'Cancelar'):
                 self.janela_novo.hide()
                 if self.janela_local is not None:
                     self.janela_local.un_hide()
                 elif self.janela_descr_padrao is not None:
                     self.janela_descr_padrao.un_hide()
+                elif self.janela_descr_compl is not None:
+                    self.janela_descr_compl.un_hide()
+
 
             # Quando a janela de Descr Padrão for fechada
             if self.window == self.janela_descr_padrao and self.event == sg.WINDOW_CLOSED:
@@ -180,6 +183,8 @@ class JanelaPrincipal:
                     self.janelanovo.botao_salvar(self.janela_novo, self.janela_local)
                 elif self.janela_descr_padrao is not None:
                     self.janelanovo.botao_salvar(self.janela_novo, self.janela_descr_padrao)
+                elif self.janela_descr_compl is not None:
+                    self.janelanovo.botao_salvar(self.janela_novo, self.janela_descr_compl)
 
             # Se clicou no Botão Salvar Descr Padrao
             if self.window == self.janela_descr_padrao and self.event == 'Salvar':
@@ -197,3 +202,22 @@ class JanelaPrincipal:
                                              self.janeladescrpadrao.lista)
                 self.janela_novo = sg.Window('Nova Descrição Padrão', layout=self.janelanovo.layout, finalize=True)
 
+            # TODO: Finalizar janela Descr Complementar
+
+            # Se clicou no Botão Salvar Descr Complementar
+            if self.window == self.janela_descr_compl and self.event == 'Salvar':
+                self.janeladescrcompl.botao_salvar(self.janela_descr_compl)
+
+            # Se clicou no Botão Excluir Descr Complementar
+            if self.window == self.janela_descr_compl and self.event == 'Excluir':
+                self.janeladescrcompl.botao_excluir(self.janela_descr_compl)
+
+            # Se clicou no Botão Nova Descr Complementar
+            if self.window == self.janela_descr_compl and self.event == 'Novo':
+                self.janela_descr_compl.hide()
+                self.janelanovo = JanelaNovo(self.janeladescrcompl.entity,
+                                             self.janeladescrcompl.service,
+                                             self.janeladescrcompl.lista)
+                self.janela_novo = sg.Window('Nova Descrição Complementar', layout=self.janelanovo.layout, finalize=True)
+
+    # TODO: Implementar Botão Cancelar
