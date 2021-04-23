@@ -72,7 +72,7 @@ class JanelaPrincipal:
                                            finalize=True)
         elif titulo == 'Inventário':
             self.janelainventario = JanelaInventario()
-            self.janela_inventario = sg.Window('Inventário', size=(400, 400), layout=self.janelainventario.layout,
+            self.janela_inventario = sg.Window('Inventário', size=util.size_tela_inventario, layout=self.janelainventario.layout,
                                                finalize=True)
         elif titulo == 'Locais':
             self.janelalocal = JanelaLocais()
@@ -109,8 +109,16 @@ class JanelaPrincipal:
 
                 # Quando queremos ir para janela de Inventário
                 if self.event == 'Iniciar Inventário':
-                    self.janela.hide()
+
                     self.cria_janela('Inventário')
+                    # Verifica se existe Centro de Custo Ativo
+                    if self.janelainventario.define_ccusto_ativo(self.janela_inventario) is None:
+                        sg.popup('Nenhum Centro de Custo ativo!')
+                        self.janela_inventario.hide()
+                        self.janela.un_hide()
+                    else:
+                        self.janela.hide()
+                        self.janela_inventario.un_hide()
 
                 # Quando queremos ir para janela de Local
                 if self.event == 'Locais':
@@ -287,10 +295,28 @@ class JanelaPrincipal:
 
         # TODO: Criar Janela de Inventário
 
-        ###### Eventos da janela principal #######
+        ###### Eventos da janela de Inventário #######
 
-            # Quando a janela de Local for fechada
+            # Quando a janela de Inventario for fechada
             if self.window == self.janela_inventario:
                 if self.event == sg.WINDOW_CLOSED:
                     self.janela_inventario.hide()
                     self.janela.un_hide()
+
+                # Quando informa o Número do Bem
+                if self.event ==  'numero_bem':
+                    print('Disparou Evento')
+                    self.janelainventario.update_form_data(self.janela_inventario)
+
+
+                # Eventos da Janela de Inventario Descr Padrao
+                if self.event == 'descrpadrao':
+                    descricao_id = util.get_id(self.values['descrpadrao'])
+                    self.janelainventario.get_dados_descr_padrao(self.janela_inventario, descricao_id)
+
+                # Eventos da Janela de Inventario Descr Complementar
+                if self.event == 'descrcomplementar':
+                    descricao_id = util.get_id(self.values['descrcomplementar'])
+                    self.janelainventario.get_dados_descr_compl(self.janela_inventario, descricao_id)
+
+

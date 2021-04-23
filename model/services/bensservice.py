@@ -13,6 +13,9 @@ class BensService:
         else:
            self._dao.update(obj)
 
+    def find_by_id(self, id):
+        return self._dao.find_by_id(id)
+
     def find_all(self):
         return self._dao.find_all()
 

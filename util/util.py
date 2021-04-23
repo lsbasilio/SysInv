@@ -5,6 +5,8 @@ height_combo = 15
 
 size_input = 47
 
+size_tela_inventario = (400, 400)
+
 def get_data_atual():
     data_atual = date.today()
     data_formatada = data_atual.strftime('%d/%m/%Y')
