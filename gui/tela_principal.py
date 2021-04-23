@@ -3,6 +3,7 @@ from gui.tela_centro_de_custo import JanelaCcusto
 from gui.tela_locais import JanelaLocais
 from gui.tela_descr_padrao import JanelaDescrPadrao
 from gui.tela_descr_complementar import JanelaDescrComplementar
+from gui.tela_inventario import JanelaInventario
 from gui.tela_novo import JanelaNovo
 from util import util
 
@@ -33,6 +34,10 @@ class JanelaPrincipal:
         # Criar as janelas de Descrição Complementar
         self.janela_descr_compl = None
         self.janeladescrcompl = None  # Objeto da classe JanelaDescrComplementar
+
+        # Criar as janelas do Inventário
+        self.janela_inventario = None
+        self.janelainventario = None  # Objeto da classe JanelaInventario
 
         # Criar as janelas de Novo
         self.janela_novo = None
@@ -65,6 +70,10 @@ class JanelaPrincipal:
             self.janelaccusto = JanelaCcusto()
             self.janela_ccusto = sg.Window('Centro de Custo', layout=self.janelaccusto.layout,
                                            finalize=True)
+        elif titulo == 'Inventário':
+            self.janelainventario = JanelaInventario()
+            self.janela_inventario = sg.Window('Inventário', size=(400, 400), layout=self.janelainventario.layout,
+                                               finalize=True)
         elif titulo == 'Locais':
             self.janelalocal = JanelaLocais()
             self.janela_local = sg.Window('Locais', layout=self.janelalocal.layout, finalize=True)
@@ -86,8 +95,6 @@ class JanelaPrincipal:
 
             self.window, self.event, self.values = sg.read_all_windows()
 
-            # TODO: Agrupar os eventos das janelas
-
             ###### Eventos da janela principal #######
             if self.window == self.janela:
                 if self.event == sg.WINDOW_CLOSED:
@@ -99,6 +106,11 @@ class JanelaPrincipal:
                 if self.event == 'Ativar Centro de Custo':
                     self.janela.hide()
                     self.cria_janela('Centro de Custo')
+
+                # Quando queremos ir para janela de Inventário
+                if self.event == 'Iniciar Inventário':
+                    self.janela.hide()
+                    self.cria_janela('Inventário')
 
                 # Quando queremos ir para janela de Local
                 if self.event == 'Locais':
@@ -272,3 +284,13 @@ class JanelaPrincipal:
                         self.janelanovo.botao_salvar(self.janela_novo, self.janela_descr_padrao)
                     elif self.janela_novo.Title == 'Nova Descrição Complementar':
                         self.janelanovo.botao_salvar(self.janela_novo, self.janela_descr_compl)
+
+        # TODO: Criar Janela de Inventário
+
+        ###### Eventos da janela principal #######
+
+            # Quando a janela de Local for fechada
+            if self.window == self.janela_inventario:
+                if self.event == sg.WINDOW_CLOSED:
+                    self.janela_inventario.hide()
+                    self.janela.un_hide()
