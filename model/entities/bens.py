@@ -41,7 +41,16 @@ class Bens:
         self._ccusto_id = valor
 
     def get_status(self):
-        return self._status
+        if self._status == BensStatus.Nao_Encontrado:
+            return 'Bem Não Encontrado'
+        elif self._status == BensStatus.Pendente:
+            return 'Bem Pendente'
+        elif self._status == BensStatus.Inventariado:
+            return 'Bem Inventariado'
+        elif self._status == BensStatus.Numero_Trocado:
+            return 'Número Trocado'
+        elif self._status == BensStatus.Novo:
+            return 'Bem Novo'
 
     def set_status(self, valor):
         self._status = valor

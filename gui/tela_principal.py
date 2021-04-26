@@ -270,18 +270,6 @@ class JanelaPrincipal:
                     elif self.janela_novo.Title == 'Nova Descrição Complementar':
                         self.cria_janela('Descrição Complementar')
 
-                    # self.janelaccusto = JanelaCcusto()
-                    # self.janela_ccusto = sg.Window('Centro de Custo', layout=self.janelaccusto.layout,
-                    #                                finalize=True)
-                    # if self.janela_ccusto is not None:
-                    #     self.janela_ccusto.un_hide()
-                    # elif self.janela_local is not None:
-                    #     self.janela_local.un_hide()
-                    # elif self.janela_descr_padrao is not None:
-                    #     self.janela_descr_padrao.un_hide()
-                    # elif self.janela_descr_compl is not None:
-                    #     self.janela_descr_compl.un_hide()
-
                 # Se clicou no Botão Salvar Novo
                 if self.event == 'Salvar':
                     if self.janela_novo.Title == 'Novo Centro de Custo':
@@ -305,7 +293,7 @@ class JanelaPrincipal:
 
                 # Quando informa o Número do Bem
                 if self.event ==  'numero_bem':
-                    print('Disparou Evento')
+                    # print('Disparou Evento')
                     self.janelainventario.update_form_data(self.janela_inventario)
 
 

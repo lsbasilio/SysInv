@@ -14,7 +14,7 @@ from model.services.centrodecustoservice import CentroDeCustoService
 from model.services.bensservice import BensService
 from model.entities.enum.ccusto_status import CcustoStatus
 from model.entities.enum.bens_status import BensStatus
-#from model.dao.impl.locaisdaoSqLite import LocaisDaoSqLite
+from model.dao.impl.locaisdaoSqLite import LocaisDaoSqLite
 from model.dao.impl.descrcomplementardaoSqLite import DescrComplementarDaoSqLite
 from util import util
 import os.path as file
@@ -66,6 +66,8 @@ import os.path as file
 # ccustodao.delete_by_id(ccusto.get_ccusto_id())
 #ccustodao.update(ccusto)
 
+daofactory = DaoFactory()
+locaisdao = daofactory.create_locais_dao()
 #locaisdao = LocaisDaoSqLite()
 #print(ccusto.get_ccusto_id())
 
@@ -190,7 +192,7 @@ teste = 'TESTE1;TESTE2'
 #descrcomplementardao.carrega_descrcomplementar_csv(r'C:\SysInv\Dados\Carga\DescrCompl.csv')
 #descrcomplementardao.carrega_descrcomplementar_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Descr.Compl')
 #descrpadraodao.carrega_descrpadrao_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Descr.Padrao')
-#locaisdao.carrega_local_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Local')
+locaisdao.carrega_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'Local')
 #locaisdao.carrega_local_csv(r'C:\SysInv\Dados\Carga\Locais.csv')
 #ccusto.carrega_ccusto_csv(r'C:\SysInv\Dados\Carga\CentroCusto.csv')
 #ccusto.carrega_ccusto_excel(r'C:\SysInv\Dados\Carga\Inventario_Teste.xlsx', 'CentroCusto')
@@ -278,9 +280,9 @@ ccusto_ativo = service.find_ccusto_ativo()
 # ccusto1 = CentroDeCusto(1, 'Ccusto1')
 # ccusto2 = CentroDeCusto(2, 'Ccusto2')
 
-lista = service.find_all()
+#lista = service.find_all()
 
-print(lista.index(ccusto_ativo))
+#print(lista.index(ccusto_ativo))
 
 print(util.width_combo)
 
