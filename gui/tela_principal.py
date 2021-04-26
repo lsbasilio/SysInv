@@ -294,8 +294,8 @@ class JanelaPrincipal:
                 # Quando informa o Número do Bem
                 if self.event ==  'numero_bem':
                     # print('Disparou Evento')
-                    self.janelainventario.update_form_data(self.janela_inventario)
-
+                    id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
+                    self.janelainventario.update_form_data(self.janela_inventario, id)
 
                 # Eventos da Janela de Inventario Descr Padrao
                 if self.event == 'descrpadrao':
@@ -307,4 +307,9 @@ class JanelaPrincipal:
                     descricao_id = util.get_id(self.values['descrcomplementar'])
                     self.janelainventario.get_dados_descr_compl(self.janela_inventario, descricao_id)
 
+
+                # Evento Inventariar o Bem
+                if self.event == 'Inventariar':
+                    id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
+                    self.janelainventario.botao_inventariar(self.janela_inventario, id)
 

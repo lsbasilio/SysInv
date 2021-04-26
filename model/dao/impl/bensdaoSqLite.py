@@ -54,7 +54,7 @@ class BensDaoSqLite(BensDao):
         try:
             str_sql = f"UPDATE {self._nome_tabela} "
             str_sql += f"SET Ccusto_Id = {obj.get_ccusto_id()}, "
-            str_sql += f"Status = {int(obj.get_status())}, "
+            str_sql += f"Status = {obj.get_status_numerico()}, "
             str_sql += f"Data_Inv = '{obj.get_data_inv()}', "
             str_sql += f"Conta = {obj.get_conta()}, "
             str_sql += f"Data = '{obj.get_data()}', "
@@ -204,6 +204,7 @@ class BensDaoSqLite(BensDao):
                     self.bens.set_numeroserie(row[6])
                     self.bens.set_conta(row[7])
                     self.bens.set_situacao(row[8])
+                    self.bens.set_status(1)
                     self.insert(self.bens)
 
                 # Salvando os campos originais na tabela de Bens
@@ -254,6 +255,7 @@ class BensDaoSqLite(BensDao):
                 self.bens.set_numeroserie(lista_numeroserie[i])
                 self.bens.set_conta(lista_conta[i])
                 self.bens.set_situacao(lista_situacao[i])
+                self.bens.set_status(1)
                 self.insert(self.bens)
                 i += 1
 

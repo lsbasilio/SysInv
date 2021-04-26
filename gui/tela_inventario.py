@@ -7,6 +7,7 @@ from model.services.descrpadraoservice import DescrPadraoService
 from model.services.descrcomplementarservice import DescrComplementarService
 from model.services.centrodecustoservice import CentroDeCustoService
 from model.services.locaisservice import LocaisService
+from model.entities.enum.bens_status import BensStatus
 from util import util
 
 
@@ -119,8 +120,6 @@ class JanelaInventario:
 
     def mostra_dados(self, janela):
 
-
-
         janela.FindElement('numero_ant').Update(self.entity.get_numero_bemant())
 
         ccusto_atual = self.ccusto_service.find_by_id(self.entity.get_ccusto_id())
@@ -174,18 +173,18 @@ class JanelaInventario:
 
     def valida_numero_bem(self, numero):
         if util.try_parse_to_int(numero) is None:
+            sg.popup('Número do Bem inválido!')
             return False
         return True
 
-    def update_form_data(self, janela):
+    def update_form_data(self, janela, id):
 
-        id = janela.FindElement('numero_bem').get()
-        id = id.strip(' ')
+        # id = janela.FindElement('numero_bem').get()
+        # id = id.strip(' ')
 
         # TODO: validar Numero do Bem
         if id != '':
             if not self.valida_numero_bem(id):
-                sg.popup('Número do Bem inválido!')
                 return
         else:
             self.limpa_dados(janela)
@@ -197,6 +196,40 @@ class JanelaInventario:
             self.mostra_dados(janela)
         else:
             self.limpa_dados(janela)
+
+    def get_form_data(self, janela):
+        self.entity.set_descricao(janela.FindElement('descricao_bem').get())
+        self.entity.set_situacao(janela.FindElement('situacao').get())
+        self.entity.set_marca(janela.FindElement('marca').get())
+        self.entity.set_modelo(janela.FindElement('modelo').get())
+        self.entity.set_numeroserie(janela.FindElement('numero_serie').get())
+        self.entity.set_usuario(janela.FindElement('usuario').get())
+        self.entity.set_observacao(janela.FindElement('observacao').get())
+        # janela.FindElement('status').Update(self.entity.get_status())
+
+    def valida_dados(self, janela, id):
+        if id == '':
+            sg.popup('Número do Bem em branco!')
+            return False
+        if not self.valida_numero_bem(id):
+            return False
+        if janela.FindElement('descricao_bem').get().strip(' ') == '':
+            sg.popup('Descrição do Bem não informada!')
+
+        return True
+
+    def botao_inventariar(self, janela, id):
+        if self.valida_dados(janela, id):
+            self.entity = self.service.find_by_id(int(id))
+            if self.entity is None:
+                self.entity = Bens()
+                self.entity.set_status(BensStatus.Novo)
+            else:
+                self.entity.set_status(BensStatus.Inventariado)
+            self.get_form_data(janela)
+            self.entity.inventariar()
+            self.service.save_or_update(self.entity)
+
 
 
 

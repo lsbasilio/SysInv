@@ -1,5 +1,5 @@
 from model.entities.enum.bens_status import BensStatus
-
+from util import util
 
 class Bens:
 
@@ -51,6 +51,9 @@ class Bens:
             return 'Número Trocado'
         elif self._status == BensStatus.Novo:
             return 'Bem Novo'
+
+    def get_status_numerico(self):
+        return self._status
 
     def set_status(self, valor):
         self._status = valor
@@ -167,7 +170,15 @@ class Bens:
 
     ##### Métodos #####
     def inventariar(self):
-        pass
+        self._data_inv = util.get_data_hora_atual()
+        self._descricao = self._descricao.upper()
+        self._usuario = self._usuario.upper()
+        self._situacao = self._situacao.upper()
+        self._descricao = self._descricao.upper()
+        self._marca = self._marca.upper()
+        self._modelo = self._modelo.upper()
+        self._numeroserie = self._numeroserie.upper()
+        self._observacao = self._observacao.upper()
 
     def cancelar_inventario(self):
         pass
