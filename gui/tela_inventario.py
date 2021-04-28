@@ -7,7 +7,6 @@ from model.services.descrpadraoservice import DescrPadraoService
 from model.services.descrcomplementarservice import DescrComplementarService
 from model.services.centrodecustoservice import CentroDeCustoService
 from model.services.locaisservice import LocaisService
-from model.entities.enum.bens_status import BensStatus
 from util import util
 
 
@@ -143,8 +142,11 @@ class JanelaInventario:
         janela.FindElement('status').Update(self.entity.get_status())
 
     # TODO: Limpar os Dados do Bem
-    def limpa_dados(self, janela):
-        pass
+    def limpa_dados(self, janela, limpa_numero_bem=False, txtstatus=''):
+        # Numero do Bem
+        if limpa_numero_bem:
+            janela.FindElement('numero_bem').Update('')
+
         # Numero Anterior
         janela.FindElement('numero_ant').Update('')
         # Data do Inventário
@@ -167,7 +169,7 @@ class JanelaInventario:
         # Observacao
         janela.FindElement('observacao').Update('')
         # Status
-        janela.FindElement('status').Update('')
+        janela.FindElement('status').Update(txtstatus)
 
     # TODO: Finalizar a Tela de Inventário
 
@@ -179,10 +181,7 @@ class JanelaInventario:
 
     def update_form_data(self, janela, id):
 
-        # id = janela.FindElement('numero_bem').get()
-        # id = id.strip(' ')
-
-        # TODO: validar Numero do Bem
+        # Validar Numero do Bem
         if id != '':
             if not self.valida_numero_bem(id):
                 return
@@ -196,8 +195,11 @@ class JanelaInventario:
             self.mostra_dados(janela)
         else:
             self.limpa_dados(janela)
+            janela.FindElement('status').Update('Bem Não Encontrado')
 
     def get_form_data(self, janela):
+        self.entity.set_ccusto_id(int(util.get_id(self.ccusto_ativo.__str__())))
+        self.entity.set_local_id(int(util.get_id(janela.FindElement('local').get())))
         self.entity.set_descricao(janela.FindElement('descricao_bem').get())
         self.entity.set_situacao(janela.FindElement('situacao').get())
         self.entity.set_marca(janela.FindElement('marca').get())
@@ -205,7 +207,6 @@ class JanelaInventario:
         self.entity.set_numeroserie(janela.FindElement('numero_serie').get())
         self.entity.set_usuario(janela.FindElement('usuario').get())
         self.entity.set_observacao(janela.FindElement('observacao').get())
-        # janela.FindElement('status').Update(self.entity.get_status())
 
     def valida_dados(self, janela, id):
         if id == '':
@@ -223,14 +224,11 @@ class JanelaInventario:
             self.entity = self.service.find_by_id(int(id))
             if self.entity is None:
                 self.entity = Bens()
-                self.entity.set_status(BensStatus.Novo)
-            else:
-                self.entity.set_status(BensStatus.Inventariado)
+                self.entity.set_numero_bem(id)
+
             self.get_form_data(janela)
             self.entity.inventariar()
             self.service.save_or_update(self.entity)
-
-
-
+            self.limpa_dados(janela, True, f'Bem {self.entity.get_numero_bem()} Inventariado')
 
 

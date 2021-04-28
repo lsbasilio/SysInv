@@ -1,5 +1,5 @@
 from model.dao.daofactory import DaoFactory
-
+from model.entities.enum.bens_status import BensStatus
 
 class BensService:
 
@@ -8,10 +8,14 @@ class BensService:
         self._dao = daofactory.create_bens_dao()
 
     def save_or_update(self, obj):
-        if self._dao.find_by_id(obj.get_numero_bem()) is None:
-           self._dao.insert(obj)
+        # Faz tratamento pelo Status do Bem antes de Inventariar
+        if obj.get_status_numerico() == BensStatus.Nao_Encontrado:
+            obj.set_status(BensStatus.Novo)
+            self._dao.insert(obj)
         else:
-           self._dao.update(obj)
+            if obj.get_status_numerico() == BensStatus.Pendente:
+                    obj.set_status(BensStatus.Inventariado)
+            self._dao.update(obj)
 
     def find_by_id(self, id):
         return self._dao.find_by_id(id)
