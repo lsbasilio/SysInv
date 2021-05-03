@@ -61,6 +61,8 @@ class JanelaInventario:
             [sg.Input(size=(self.size_input, 1), key='ccustoativo')],
             [sg.Text('Número do Bem', size=(20, 1)), sg.Text('Número Anterior')],
             [sg.Input(size=(23, 1), enable_events=True, key='numero_bem'), sg.Input(size=(22, 1), key='numero_ant')],
+            [sg.Text('Status do Bem')],
+            [sg.Input(size=(self.size_input, 1), key='status')],
             [sg.Text('Data do Inventário')],
             [sg.Input(size=(self.size_input, 1), key='datainv')],
             [sg.Text('Centro de Custo Atual')],
@@ -89,8 +91,6 @@ class JanelaInventario:
             [sg.Input(size=(self.size_input, 1), key='usuario')],
             [sg.Text('Observação')],
             [sg.Input(size=(self.size_input, 1), key='observacao')],
-            [sg.Text('Status do Bem')],
-            [sg.Input(size=(self.size_input, 1), key='status')],
             [sg.Button('Inventariar', size=(9, 1)), sg.Button('Limpar', size=(8, 1)), sg.Button('Cancelar', size=(9, 1)), sg.Button('Sair', size=(8, 1))]
         ]
 
@@ -200,7 +200,13 @@ class JanelaInventario:
     def get_form_data(self, janela):
         self.entity.set_ccusto_id(int(util.get_id(self.ccusto_ativo.__str__())))
         self.entity.set_local_id(int(util.get_id(janela.FindElement('local').get())))
-        self.entity.set_descricao(janela.FindElement('descricao_bem').get())
+        descricao = janela.FindElement('descricao_bem').get()
+        descricao = util.retira_caracteres_especiais(descricao)
+        descricao_compl = janela.FindElement('descricao_compl_bem').get()
+        descricao_compl = util.retira_caracteres_especiais(descricao_compl)
+        if descricao_compl != '':
+            descricao = descricao + ' ' + descricao_compl
+        self.entity.set_descricao(descricao)
         self.entity.set_situacao(janela.FindElement('situacao').get())
         self.entity.set_marca(janela.FindElement('marca').get())
         self.entity.set_modelo(janela.FindElement('modelo').get())
@@ -216,6 +222,7 @@ class JanelaInventario:
             return False
         if janela.FindElement('descricao_bem').get().strip(' ') == '':
             sg.popup('Descrição do Bem não informada!')
+            return False
 
         return True
 
