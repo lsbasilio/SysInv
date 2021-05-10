@@ -229,7 +229,7 @@ class JanelaInventario:
 
     def botao_inventariar(self, janela, id):
         if self.valida_dados(janela, id):
-            self.entity = self.service.find_by_id(int(id))
+            #self.entity = self.service.find_by_id(int(id))
             if self.entity is None:
                 self.entity = Bens()
                 self.entity.set_numero_bem(id)
@@ -239,4 +239,4 @@ class JanelaInventario:
             self.service.save_or_update(self.entity)
             self.limpa_dados(janela, True, f'Bem {self.entity.get_numero_bem()} Inventariado')
 
-
+    # TODO: Limpar Dados e Cancelar Inventário
