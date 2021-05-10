@@ -7,6 +7,7 @@ from model.services.descrpadraoservice import DescrPadraoService
 from model.services.descrcomplementarservice import DescrComplementarService
 from model.services.centrodecustoservice import CentroDeCustoService
 from model.services.locaisservice import LocaisService
+import model.entities.enum.bens_status as Status
 from util import util
 
 
@@ -62,11 +63,11 @@ class JanelaInventario:
             [sg.Text('Número do Bem', size=(20, 1)), sg.Text('Número Anterior')],
             [sg.Input(size=(23, 1), enable_events=True, key='numero_bem'), sg.Input(size=(22, 1), key='numero_ant')],
             [sg.Text('Status do Bem')],
-            [sg.Input(size=(self.size_input, 1), key='status')],
+            [sg.Input(size=(self.size_input, 1), key='status', readonly=True)],
             [sg.Text('Data do Inventário')],
-            [sg.Input(size=(self.size_input, 1), key='datainv')],
+            [sg.Input(size=(self.size_input, 1), key='datainv', readonly=True)],
             [sg.Text('Centro de Custo Atual')],
-            [sg.Input(size=(self.size_input, 1), key='ccustoatual')],
+            [sg.Input(size=(self.size_input, 1), key='ccustoatual', readonly=True)],
             [sg.Text('Local')],
             [sg.Combo(self.lista_local, size=(util.width_combo, util.height_combo), readonly=True,
                       enable_events=True, default_value=self.lista_local[0], key='local')],
@@ -195,7 +196,7 @@ class JanelaInventario:
             self.mostra_dados(janela)
         else:
             self.limpa_dados(janela)
-            janela.FindElement('status').Update('Bem Não Encontrado')
+            janela.FindElement('status').Update(Status.status_texto[Status.BensStatus.Nao_Encontrado])
 
     def get_form_data(self, janela):
         self.entity.set_ccusto_id(int(util.get_id(self.ccusto_ativo.__str__())))

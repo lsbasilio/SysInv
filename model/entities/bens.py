@@ -1,13 +1,14 @@
-from model.entities.enum.bens_status import BensStatus
+#from model.entities.enum.bens_status import BensStatus
+import model.entities.enum.bens_status as Status
 from util import util
 
 class Bens:
 
     ##### Construtores ######
-    def __init__(self,numero_bem=0,ccusto_id=0,status=BensStatus.Nao_Encontrado,data_inv='',conta=0,data='',observacao='',local_id=0,usuario='',descricao='',marca='',modelo='',numeroserie='',situacao='',numero_bemant=0,ccusto_ant=0,local_ant=0,descricao_ant='',marca_ant='',modelo_ant='',numero_serieant=''):
+    def __init__(self,numero_bem=0,ccusto_id=0,status=Status.BensStatus.Nao_Encontrado,data_inv='',conta=0,data='',observacao='',local_id=0,usuario='',descricao='',marca='',modelo='',numeroserie='',situacao='',numero_bemant=0,ccusto_ant=0,local_ant=0,descricao_ant='',marca_ant='',modelo_ant='',numero_serieant=''):
         self._numero_bem = numero_bem
         self._ccusto_id = ccusto_id
-        self._status = BensStatus(status)
+        self._status = Status.BensStatus(status)
         self._data_inv = data_inv
         self._conta = conta
         self._data = data
@@ -41,16 +42,7 @@ class Bens:
         self._ccusto_id = valor
 
     def get_status(self):
-        if self._status == BensStatus.Nao_Encontrado:
-            return 'Bem Não Encontrado'
-        elif self._status == BensStatus.Pendente:
-            return 'Bem Pendente'
-        elif self._status == BensStatus.Inventariado:
-            return 'Bem Inventariado'
-        elif self._status == BensStatus.Numero_Trocado:
-            return 'Número Trocado'
-        elif self._status == BensStatus.Novo:
-            return 'Bem Novo'
+        return Status.status_texto[self._status]
 
     def get_status_numerico(self):
         return self._status

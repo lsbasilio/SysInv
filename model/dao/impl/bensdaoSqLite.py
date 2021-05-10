@@ -131,7 +131,7 @@ class BensDaoSqLite(BensDao):
             raise ValueError('Erro ao encontrar todos os Bens: ', erro)
 
     def instantiate_bem(self, lista):
-        self.bens_temp =Bens()
+        self.bens_temp = Bens()
         self.bens_temp.set_numero_bem(int(lista[0]))
         self.bens_temp.set_ccusto_id(int(lista[1]))
         self.bens_temp.set_status(int(lista[2]))
