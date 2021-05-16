@@ -244,7 +244,7 @@ class JanelaInventario:
             self.service.save_or_update(self.entity)
             self.limpa_dados(janela, True, f'Bem {self.entity.get_numero_bem()} Inventariado')
 
-    # TODO: Limpar Dados e Cancelar Inventário
+    # TODO: Limpar Dados e Cancelar Inventário dos Bens Novos
     def botao_cancelar(self, janela, id):
 
         if self.entity is None:

@@ -5,7 +5,7 @@ from util import util
 class Bens:
 
     ##### Construtores ######
-    def __init__(self,numero_bem=0,ccusto_id=0,status=Status.BensStatus.Nao_Encontrado,data_inv='',conta=0,data='',observacao='',local_id=0,usuario='',descricao='',marca='',modelo='',numeroserie='',situacao='',numero_bemant=0,ccusto_ant=0,local_ant=0,descricao_ant='',marca_ant='',modelo_ant='',numero_serieant=''):
+    def __init__(self,numero_bem=0,ccusto_id=0,status=Status.BensStatus.Nao_Encontrado,data_inv='',conta=0,data='',observacao='',local_id=0,usuario='',descricao='',marca='',modelo='',numeroserie='',situacao='',numero_bemant=0,ccusto_ant=0,local_ant=0,descricao_ant='',marca_ant='',modelo_ant='',numero_serieant='',situacao_ant=''):
         self._numero_bem = numero_bem
         self._ccusto_id = ccusto_id
         self._status = Status.BensStatus(status)
@@ -27,6 +27,7 @@ class Bens:
         self._marca_ant = marca_ant
         self._modelo_ant = modelo_ant
         self._numero_serieant = numero_serieant
+        self._situacao_ant = situacao_ant
 
     ##### Getters e Setters #####
     def get_numero_bem(self):
@@ -158,6 +159,12 @@ class Bens:
     def set_numero_serieant(self, valor):
         self._numero_serieant = valor
 
+    def get_situacao_ant(self):
+        return self._situacao_ant
+
+    def set_situacao_ant(self, valor):
+        self._situacao_ant = valor
+
 #    numero_bemant = 0, ccusto_ant = 0, local_ant = 0, descricao_ant = '', marca_ant = '', modelo_ant = '', numero_serieant
 
     ##### Métodos #####
@@ -181,6 +188,7 @@ class Bens:
         self._marca = self._marca_ant
         self._modelo = self._modelo_ant
         self._numeroserie = self._numero_serieant
+        self._situacao = self._situacao_ant
         self._usuario = ''
         self._observacao = ''
 

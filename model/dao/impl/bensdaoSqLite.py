@@ -90,8 +90,8 @@ class BensDaoSqLite(BensDao):
             str_sql += f"Descricao = '{obj.get_descricao_ant()}', "
             str_sql += f"Marca = '{obj.get_marca_ant()}', "
             str_sql += f"Modelo = '{obj.get_modelo_ant()}', "
-            str_sql += f"Numero_Serie = '{obj.get_numeroserie_ant()}' "
-            # str_sql += f"Situacao = '{obj.get_situacao()}' "
+            str_sql += f"Numero_Serie = '{obj.get_numero_serieant()}', "
+            str_sql += f"Situacao = '{obj.get_situacao_ant()}' "
             str_sql += f"WHERE Numero_Bem = {obj.get_numero_bem()}"
 
             cursor.execute(str_sql)
@@ -182,6 +182,7 @@ class BensDaoSqLite(BensDao):
         self.bens_temp.set_marca_ant(lista[18])
         self.bens_temp.set_modelo_ant(lista[19])
         self.bens_temp.set_numero_serieant(lista[20])
+        self.bens_temp.set_situacao_ant(lista[21])
 
         return self.bens_temp
 
@@ -196,7 +197,8 @@ class BensDaoSqLite(BensDao):
             str_sql += "Descricao_Ant = Descricao,"
             str_sql += "Marca_Ant = Marca,"
             str_sql += "Modelo_Ant = Modelo,"
-            str_sql += "Numero_SerieAnt = Numero_Serie"
+            str_sql += "Numero_SerieAnt = Numero_Serie,"
+            str_sql += "Situacao_Ant = Situacao"
 
             cursor.execute(str_sql)
 
