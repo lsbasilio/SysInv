@@ -287,6 +287,7 @@ class JanelaPrincipal:
 
             # Quando a janela de Inventario for fechada
             if self.window == self.janela_inventario:
+
                 if self.event == sg.WINDOW_CLOSED:
                     self.janela_inventario.hide()
                     self.janela.un_hide()
@@ -307,9 +308,14 @@ class JanelaPrincipal:
                     descricao_id = util.get_id(self.values['descrcomplementar'])
                     self.janelainventario.get_dados_descr_compl(self.janela_inventario, descricao_id)
 
-
                 # Evento Inventariar o Bem
                 if self.event == 'Inventariar':
                     id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
                     self.janelainventario.botao_inventariar(self.janela_inventario, id)
+
+                # Cancelar o Inventário do Bem
+                if self.event == 'Cancelar':
+                    id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
+                    self.janelainventario.botao_cancelar(self.janela_inventario, id)
+
 

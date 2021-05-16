@@ -16,6 +16,10 @@ class BensDao(ABC):
         pass
 
     @abstractmethod
+    def cancelar(self, obj):
+        pass
+
+    @abstractmethod
     def delete_by_id(self, id):
         pass
 

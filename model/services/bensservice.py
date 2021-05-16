@@ -17,6 +17,9 @@ class BensService:
                     obj.set_status(BensStatus.Inventariado)
             self._dao.update(obj)
 
+    def cancelar(self, obj):
+        return self._dao.cancelar(obj)
+
     def find_by_id(self, id):
         return self._dao.find_by_id(id)
 

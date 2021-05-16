@@ -1,4 +1,4 @@
-#from model.entities.enum.bens_status import BensStatus
+
 import model.entities.enum.bens_status as Status
 from util import util
 
@@ -147,10 +147,10 @@ class Bens:
         self._marca_ant = valor
 
     def get_modelo_ant(self):
-        return self._numero_bemant
+        return self._modelo_ant
 
     def set_modelo_ant(self, valor):
-        self._numero_bemant = valor
+        self._modelo_ant = valor
 
     def get_numero_serieant(self):
         return self._numero_serieant
@@ -173,7 +173,16 @@ class Bens:
         self._observacao = self._observacao.upper()
 
     def cancelar_inventario(self):
-        pass
+        self._ccusto_id = self._ccusto_ant
+        self._status = Status.BensStatus.Pendente
+        self._data_inv = ''
+        self._local_id = self._local_ant
+        self._descricao = self._descricao_ant
+        self._marca = self._marca_ant
+        self._modelo = self._modelo_ant
+        self._numeroserie = self._numero_serieant
+        self._usuario = ''
+        self._observacao = ''
 
     def trocar_numero(self):
         pass

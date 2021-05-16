@@ -175,9 +175,14 @@ class JanelaInventario:
     # TODO: Finalizar a Tela de Inventário
 
     def valida_numero_bem(self, numero):
+        if numero == '':
+            sg.popup('Número do Bem em branco!')
+            return False
+
         if util.try_parse_to_int(numero) is None:
             sg.popup('Número do Bem inválido!')
             return False
+
         return True
 
     def update_form_data(self, janela, id):
@@ -216,9 +221,9 @@ class JanelaInventario:
         self.entity.set_observacao(janela.FindElement('observacao').get())
 
     def valida_dados(self, janela, id):
-        if id == '':
-            sg.popup('Número do Bem em branco!')
-            return False
+        # if id == '':
+        #     sg.popup('Número do Bem em branco!')
+        #     return False
         if not self.valida_numero_bem(id):
             return False
         if janela.FindElement('descricao_bem').get().strip(' ') == '':
@@ -240,3 +245,21 @@ class JanelaInventario:
             self.limpa_dados(janela, True, f'Bem {self.entity.get_numero_bem()} Inventariado')
 
     # TODO: Limpar Dados e Cancelar Inventário
+    def botao_cancelar(self, janela, id):
+
+        if self.entity is None:
+            sg.popup('Bem não informado!')
+            return
+
+        if self.valida_numero_bem(id):
+
+            if self.entity.get_status_numerico() in [Status.BensStatus.Nao_Encontrado,
+                                                   Status.BensStatus.Pendente]:
+                sg.Popup(f'O Bem {id} ainda não foi Inventariado!')
+            else:
+                if self.entity.get_status_numerico() == Status.BensStatus.Inventariado:
+                    self.entity.cancelar_inventario()
+                    self.service.cancelar(self.entity)
+                    self.update_form_data(janela, id)
+
+

@@ -75,6 +75,32 @@ class BensDaoSqLite(BensDao):
         finally:
             self._banco.commit()
 
+    def cancelar(self, obj):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"UPDATE {self._nome_tabela} "
+            str_sql += f"SET Ccusto_Id = {obj.get_ccusto_ant()}, "
+            str_sql += f"Status = {obj.get_status_numerico()}, "
+            str_sql += f"Data_Inv = '{obj.get_data_inv()}', "
+            str_sql += f"Observacao = '{obj.get_observacao()}', "
+            str_sql += f"Local_Id = {obj.get_local_ant()}, "
+            str_sql += f"Usuario = '{obj.get_usuario()}', "
+            str_sql += f"Descricao = '{obj.get_descricao_ant()}', "
+            str_sql += f"Marca = '{obj.get_marca_ant()}', "
+            str_sql += f"Modelo = '{obj.get_modelo_ant()}', "
+            str_sql += f"Numero_Serie = '{obj.get_numeroserie_ant()}' "
+            # str_sql += f"Situacao = '{obj.get_situacao()}' "
+            str_sql += f"WHERE Numero_Bem = {obj.get_numero_bem()}"
+
+            cursor.execute(str_sql)
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao cancelar o Bem: ', erro)
+        finally:
+            self._banco.commit()
+
     def delete_by_id(self, id):
 
         cursor = self._banco.cursor()
@@ -146,6 +172,17 @@ class BensDaoSqLite(BensDao):
         self.bens_temp.set_modelo(lista[11])
         self.bens_temp.set_numeroserie(lista[12])
         self.bens_temp.set_situacao(lista[13])
+        self.bens_temp.set_numero_bemant(lista[14])
+        # Campos anteriores
+        if lista[15] is not None:
+            self.bens_temp.set_ccusto_ant(int(lista[15]))
+        if lista[16] is not None:
+            self.bens_temp.set_local_ant(int(lista[16]))
+        self.bens_temp.set_descricao_ant(lista[17])
+        self.bens_temp.set_marca_ant(lista[18])
+        self.bens_temp.set_modelo_ant(lista[19])
+        self.bens_temp.set_numero_serieant(lista[20])
+
         return self.bens_temp
 
     def salvar_campos_originais(self):
