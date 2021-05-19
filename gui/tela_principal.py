@@ -288,7 +288,7 @@ class JanelaPrincipal:
             # Quando a janela de Inventario for fechada
             if self.window == self.janela_inventario:
 
-                if self.event == sg.WINDOW_CLOSED:
+                if self.event == sg.WINDOW_CLOSED or self.event == 'Sair':
                     self.janela_inventario.hide()
                     self.janela.un_hide()
 

@@ -251,7 +251,7 @@ class JanelaInventario:
             sg.popup('Bem não informado!')
             return
 
-        if self.valida_numero_bem(id):
+        if self.valida_numero_bem(id) and sg.popup_yes_no(f'Deseja Cancelar o Inventário do Bem {id}?') == 'Yes':
 
             if self.entity.get_status_numerico() in [Status.BensStatus.Nao_Encontrado,
                                                    Status.BensStatus.Pendente]:
@@ -261,5 +261,10 @@ class JanelaInventario:
                     self.entity.cancelar_inventario()
                     self.service.cancelar(self.entity)
                     self.update_form_data(janela, id)
+                elif self.entity.get_status_numerico() == Status.BensStatus.Novo:
+                    self.service.remove(self.entity)
+                    self.limpa_dados(janela, True, f'Bem {id} cancelado')
+
+                sg.popup(f'Bem {id} cancelado com sucesso!')
 
 
