@@ -5,6 +5,7 @@ from gui.tela_descr_padrao import JanelaDescrPadrao
 from gui.tela_descr_complementar import JanelaDescrComplementar
 from gui.tela_inventario import JanelaInventario
 from gui.tela_novo import JanelaNovo
+from gui.tela_troca_numero import JanelaTrocaNumero
 from util import util
 
 
@@ -43,6 +44,10 @@ class JanelaPrincipal:
         self.janela_novo = None
         self.janelanovo = None
 
+        # Criar as janelas de Trocar Número
+        self.janela_troca = None
+        self.janelatroca = None
+
         sg.theme(util.get_tema_janelas())
 
         self.layout = [
@@ -61,6 +66,7 @@ class JanelaPrincipal:
         self.janela_ccusto = None
         self.janela_local = None
         self.janela_novo = None
+        self.janela_troca = None
         self.janela_descr_padrao = None
         self.janela_descr_compl = None
         return self.janela
@@ -318,4 +324,18 @@ class JanelaPrincipal:
                     id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
                     self.janelainventario.botao_cancelar(self.janela_inventario, id)
 
+                if self.event == 'Trocar':
+                    self.janela_inventario.hide()
+                    self.janelatroca = JanelaTrocaNumero()
+                    self.janela_troca = sg.Window('Trocar Número do Bem', layout=self.janelatroca.layout,
+                                                 finalize=True)
+
+        ###### Eventos da janela Trocar Número #######
+
+        # Quando a janela de Trocar Número for fechada
+            if self.window == self.janela_troca:
+
+                if self.event == sg.WINDOW_CLOSED or self.event == 'Sair':
+                    self.janela_troca.hide()
+                    self.janela_inventario.un_hide()
 

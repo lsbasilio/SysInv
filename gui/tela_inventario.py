@@ -92,7 +92,7 @@ class JanelaInventario:
             [sg.Input(size=(self.size_input, 1), key='usuario')],
             [sg.Text('Observação')],
             [sg.Input(size=(self.size_input, 1), key='observacao')],
-            [sg.Button('Inventariar', size=(9, 1)), sg.Button('Limpar', size=(8, 1)), sg.Button('Cancelar', size=(9, 1)), sg.Button('Sair', size=(8, 1))]
+            [sg.Button('Inventariar', size=(9, 1)), sg.Button('Trocar', size=(6, 1)), sg.Button('Limpar', size=(6, 1)), sg.Button('Cancelar', size=(7, 1)), sg.Button('Sair', size=(5, 1))]
         ]
 
         self.layout = [[sg.Column(self.col_layout, scrollable=True, vertical_scroll_only=True, size=util.size_tela_inventario)]]
@@ -212,6 +212,7 @@ class JanelaInventario:
         descricao_compl = util.retira_caracteres_especiais(descricao_compl)
         if descricao_compl != '':
             descricao = descricao + ' ' + descricao_compl
+
         self.entity.set_descricao(descricao)
         self.entity.set_situacao(janela.FindElement('situacao').get())
         self.entity.set_marca(janela.FindElement('marca').get())
