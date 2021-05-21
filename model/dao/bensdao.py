@@ -32,6 +32,10 @@ class BensDao(ABC):
         pass
 
     @abstractmethod
+    def existe(self, id):
+        pass
+
+    @abstractmethod
     def carrega_csv(self, path):
         pass
 

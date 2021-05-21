@@ -291,6 +291,9 @@ class JanelaPrincipal:
 
         ###### Eventos da janela de Inventário #######
 
+            def get_numero_bem():
+                return self.janela_inventario.FindElement('numero_bem').get().strip(' ')
+
             # Quando a janela de Inventario for fechada
             if self.window == self.janela_inventario:
 
@@ -301,7 +304,8 @@ class JanelaPrincipal:
                 # Quando informa o Número do Bem
                 if self.event ==  'numero_bem':
                     # print('Disparou Evento')
-                    id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
+                    #id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
+                    id = get_numero_bem()
                     self.janelainventario.update_form_data(self.janela_inventario, id)
 
                 # Eventos da Janela de Inventario Descr Padrao
@@ -316,26 +320,48 @@ class JanelaPrincipal:
 
                 # Evento Inventariar o Bem
                 if self.event == 'Inventariar':
-                    id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
+                    #id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
+                    id = get_numero_bem()
                     self.janelainventario.botao_inventariar(self.janela_inventario, id)
 
                 # Cancelar o Inventário do Bem
                 if self.event == 'Cancelar':
-                    id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
+                    #id = self.janela_inventario.FindElement('numero_bem').get().strip(' ')
+                    id = get_numero_bem()
                     self.janelainventario.botao_cancelar(self.janela_inventario, id)
 
                 if self.event == 'Trocar':
-                    self.janela_inventario.hide()
-                    self.janelatroca = JanelaTrocaNumero()
-                    self.janela_troca = sg.Window('Trocar Número do Bem', layout=self.janelatroca.layout,
-                                                 finalize=True)
+                    id = get_numero_bem()
+                    if self.janelainventario.trocar_ok(id):
+                        self.janela_inventario.hide()
+                        self.janelatroca = JanelaTrocaNumero()
+                        self.janela_troca = sg.Window('Trocar Número do Bem', layout=self.janelatroca.layout,
+                                                     finalize=True)
+                        self.janela_troca.FindElement('numero_atual').Update(id)
 
         ###### Eventos da janela Trocar Número #######
-
-        # Quando a janela de Trocar Número for fechada
             if self.window == self.janela_troca:
 
+                # Quando a janela de Trocar Número for fechada
                 if self.event == sg.WINDOW_CLOSED or self.event == 'Sair':
                     self.janela_troca.hide()
                     self.janela_inventario.un_hide()
+
+                # Quando clica no botão Trocar
+                if self.event == 'Trocar':
+                    numero_novo = self.janela_troca.FindElement('numero_novo').get()
+                    numero_atual = self.janela_troca.FindElement('numero_atual').get()
+
+                    if numero_atual == numero_novo:
+                        sg.popup('Número novo igual ao atual!')
+                    elif self.janelainventario.valida_numero_bem(numero_novo):
+                        if self.janelainventario.bem_ja_existe(numero_novo):
+                            sg.popup('Número novo já existe no Cadastro! Informe outro')
+                        else:
+                            self.janela_inventario.FindElement('numero_bem').Update(numero_novo)
+                            self.janela_inventario.FindElement('numero_ant').Update(numero_atual)
+                            self.janelainventario.troca_numero(numero_atual, numero_novo)
+                            self.janela_troca.hide()
+                            self.janela_inventario.un_hide()
+
 

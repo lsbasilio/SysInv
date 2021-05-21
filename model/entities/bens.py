@@ -165,8 +165,6 @@ class Bens:
     def set_situacao_ant(self, valor):
         self._situacao_ant = valor
 
-#    numero_bemant = 0, ccusto_ant = 0, local_ant = 0, descricao_ant = '', marca_ant = '', modelo_ant = '', numero_serieant
-
     ##### Métodos #####
     def inventariar(self):
         self._data_inv = util.get_data_hora_atual()

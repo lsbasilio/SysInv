@@ -1,6 +1,7 @@
 from model.dao.daofactory import DaoFactory
 from model.entities.enum.bens_status import BensStatus
 
+
 class BensService:
 
     def __init__(self):
@@ -14,7 +15,7 @@ class BensService:
             self._dao.insert(obj)
         else:
             if obj.get_status_numerico() == BensStatus.Pendente:
-                    obj.set_status(BensStatus.Inventariado)
+                obj.set_status(BensStatus.Inventariado)
             self._dao.update(obj)
 
     def cancelar(self, obj):
@@ -22,6 +23,9 @@ class BensService:
 
     def find_by_id(self, id):
         return self._dao.find_by_id(id)
+
+    def existe(self, id):
+        return self._dao.existe(id)
 
     def find_all(self):
         return self._dao.find_all()

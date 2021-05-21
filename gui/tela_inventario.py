@@ -179,7 +179,7 @@ class JanelaInventario:
             sg.popup('Número do Bem em branco!')
             return False
 
-        if util.try_parse_to_int(numero) is None:
+        if util.try_parse_to_int(numero) is None or int(numero) <= 0:
             sg.popup('Número do Bem inválido!')
             return False
 
@@ -204,6 +204,10 @@ class JanelaInventario:
             janela.FindElement('status').Update(Status.status_texto[Status.BensStatus.Nao_Encontrado])
 
     def get_form_data(self, janela):
+        if janela.FindElement('numero_ant').get().strip(' ') != '':
+            self.entity.set_numero_bemant(int(janela.FindElement('numero_ant').get()))
+        else:
+            self.entity.set_numero_bemant(0)
         self.entity.set_ccusto_id(int(util.get_id(self.ccusto_ativo.__str__())))
         self.entity.set_local_id(int(util.get_id(janela.FindElement('local').get())))
         descricao = janela.FindElement('descricao_bem').get()
@@ -222,9 +226,7 @@ class JanelaInventario:
         self.entity.set_observacao(janela.FindElement('observacao').get())
 
     def valida_dados(self, janela, id):
-        # if id == '':
-        #     sg.popup('Número do Bem em branco!')
-        #     return False
+
         if not self.valida_numero_bem(id):
             return False
         if janela.FindElement('descricao_bem').get().strip(' ') == '':
@@ -268,4 +270,22 @@ class JanelaInventario:
 
                 sg.popup(f'Bem {id} cancelado com sucesso!')
 
+    def trocar_ok(self, numero_bem):
+        if self.valida_numero_bem(numero_bem):
+            if self.entity is None:
+                sg.popup('Nenhum bem informado para troca de Número!')
+                return False
+            elif self.entity.get_status_numerico() == Status.BensStatus.Pendente:
+                return True
+            else:
+                sg.popup('Bem não pode ter o Número Trocado!')
+                return False
 
+        return False
+
+    def bem_ja_existe(self, id):
+        return self.service.existe(id)
+
+    def troca_numero(self, numero_atual, numero_novo):
+        self.entity.set_numero_bem(numero_novo)
+        self.entity.set_numero_bemant(numero_atual)

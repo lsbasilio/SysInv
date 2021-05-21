@@ -32,9 +32,9 @@ class BensDaoSqLite(BensDao):
 
         try:
             str_sql = f"INSERT INTO {self._nome_tabela} "
-            str_sql += "(Numero_Bem,Ccusto_Id,Status,Data_Inv,Conta,Data,Observacao,Local_Id,Usuario,Descricao,Marca,Modelo,Numero_Serie,Situacao)"
+            str_sql += "(Numero_Bem,Numero_BemAnt,,Ccusto_Id,Status,Data_Inv,Conta,Data,Observacao,Local_Id,Usuario,Descricao,Marca,Modelo,Numero_Serie,Situacao)"
             str_sql += " VALUES "
-            str_sql += f"({obj.get_numero_bem()},{obj.get_ccusto_id()},{obj.get_status_numerico()},'{obj.get_data_inv()}'," \
+            str_sql += f"({obj.get_numero_bem()},{obj.get_numero_bemant()},{obj.get_ccusto_id()},{obj.get_status_numerico()},'{obj.get_data_inv()}'," \
                        f"{obj.get_conta()},'{obj.get_data()}','{obj.get_observacao()}'," \
                        f"{obj.get_local_id()},'{obj.get_usuario()}'," \
                        f"'{obj.get_descricao()}','{obj.get_marca()}','{obj.get_modelo()}'," \
@@ -54,6 +54,8 @@ class BensDaoSqLite(BensDao):
         try:
             str_sql = f"UPDATE {self._nome_tabela} "
             str_sql += f"SET Ccusto_Id = {obj.get_ccusto_id()}, "
+            str_sql += f"Numero_Bem = {obj.get_numero_bem()}, "
+            str_sql += f"Numero_BemAnt = {obj.get_numero_bemant()}, "
             str_sql += f"Status = {obj.get_status_numerico()}, "
             str_sql += f"Data_Inv = '{obj.get_data_inv()}', "
             str_sql += f"Conta = {obj.get_conta()}, "
@@ -66,8 +68,12 @@ class BensDaoSqLite(BensDao):
             str_sql += f"Modelo = '{obj.get_modelo()}', "
             str_sql += f"Numero_Serie = '{obj.get_numeroserie()}', "
             str_sql += f"Situacao = '{obj.get_situacao()}' "
-            str_sql += f"WHERE Numero_Bem = {obj.get_numero_bem()}"
+            # if obj.get_numero_bemant == 0:
+            str_sql += f"WHERE Numero_Bem = {obj.get_numero_bem()} OR Numero_Bem = {obj.get_numero_bemant()}"
+            # else:
+            #     str_sql += f"WHERE Numero_Bem = {obj.get_numero_bemant()}"
 
+            # print(str_sql)
             cursor.execute(str_sql)
 
         except sqlite3.Error as erro:
@@ -134,6 +140,26 @@ class BensDaoSqLite(BensDao):
 
         except sqlite3.Error as erro:
             raise ValueError('Erro ao encontrar o Bem: ', erro)
+
+    def existe(self, id):
+
+        cursor = self._banco.cursor()
+
+        try:
+            str_sql = f"SELECT * FROM {self._nome_tabela} " \
+                      f"WHERE Numero_Bem = {id}"
+
+            cursor.execute(str_sql)
+
+            lista = cursor.fetchall()
+
+            if len(lista) > 0:
+                return True
+            else:
+                return None
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro aoverificar se o Bem existe: ', erro)
 
     def find_all(self):
 
