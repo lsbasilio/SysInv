@@ -88,6 +88,9 @@ class BensDaoSqLite(BensDao):
         try:
             str_sql = f"UPDATE {self._nome_tabela} "
             str_sql += f"SET Ccusto_Id = {obj.get_ccusto_ant()}, "
+            if obj.get_numero_bemant() > 0:
+                str_sql += f"Numero_Bem = {obj.get_numero_bemant()}, "
+                str_sql += f"Numero_BemAnt = 0, "
             str_sql += f"Status = {obj.get_status_numerico()}, "
             str_sql += f"Data_Inv = '{obj.get_data_inv()}', "
             str_sql += f"Observacao = '{obj.get_observacao()}', "

@@ -120,6 +120,8 @@ class JanelaInventario:
 
     def mostra_dados(self, janela):
 
+        janela.FindElement('numero_bem').Update(self.entity.get_numero_bem())
+
         janela.FindElement('numero_ant').Update(self.entity.get_numero_bemant())
 
         ccusto_atual = self.ccusto_service.find_by_id(self.entity.get_ccusto_id())
@@ -254,6 +256,8 @@ class JanelaInventario:
             sg.popup('Bem não informado!')
             return
 
+        numero_bem = id
+
         if self.valida_numero_bem(id) and sg.popup_yes_no(f'Deseja Cancelar o Inventário do Bem {id}?') == 'Yes':
 
             if self.entity.get_status_numerico() in [Status.BensStatus.Nao_Encontrado,
@@ -263,12 +267,19 @@ class JanelaInventario:
                 if self.entity.get_status_numerico() == Status.BensStatus.Inventariado:
                     self.entity.cancelar_inventario()
                     self.service.cancelar(self.entity)
+                    # self.update_form_data(janela, id)
+                    # Se tiver número anterior, faz a troca
+                    if self.entity.get_numero_bemant() != 0 and self.entity.get_numero_bemant() is not None:
+                        self.entity.set_numero_bem(self.entity.get_numero_bemant())
+                        self.entity.set_numero_bemant(0)
+                        id = self.entity.get_numero_bem()
                     self.update_form_data(janela, id)
+
                 elif self.entity.get_status_numerico() == Status.BensStatus.Novo:
                     self.service.remove(self.entity)
                     self.limpa_dados(janela, True, f'Bem {id} cancelado')
 
-                sg.popup(f'Bem {id} cancelado com sucesso!')
+                sg.popup(f'Bem {numero_bem} cancelado com sucesso!')
 
     def trocar_ok(self, numero_bem):
         if self.valida_numero_bem(numero_bem):
