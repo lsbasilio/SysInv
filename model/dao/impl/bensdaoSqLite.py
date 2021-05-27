@@ -32,7 +32,7 @@ class BensDaoSqLite(BensDao):
 
         try:
             str_sql = f"INSERT INTO {self._nome_tabela} "
-            str_sql += "(Numero_Bem,Numero_BemAnt,,Ccusto_Id,Status,Data_Inv,Conta,Data,Observacao,Local_Id,Usuario,Descricao,Marca,Modelo,Numero_Serie,Situacao)"
+            str_sql += "(Numero_Bem,Numero_BemAnt,Ccusto_Id,Status,Data_Inv,Conta,Data,Observacao,Local_Id,Usuario,Descricao,Marca,Modelo,Numero_Serie,Situacao)"
             str_sql += " VALUES "
             str_sql += f"({obj.get_numero_bem()},{obj.get_numero_bemant()},{obj.get_ccusto_id()},{obj.get_status_numerico()},'{obj.get_data_inv()}'," \
                        f"{obj.get_conta()},'{obj.get_data()}','{obj.get_observacao()}'," \

@@ -9,3 +9,4 @@ class BensStatus(IntEnum):
     Inventariado = 2
     Numero_Trocado = 3
     Novo = 4
+

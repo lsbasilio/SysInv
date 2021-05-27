@@ -239,7 +239,7 @@ class JanelaInventario:
 
     def botao_inventariar(self, janela, id):
         if self.valida_dados(janela, id):
-            #self.entity = self.service.find_by_id(int(id))
+
             if self.entity is None:
                 self.entity = Bens()
                 self.entity.set_numero_bem(id)
@@ -247,7 +247,12 @@ class JanelaInventario:
             self.get_form_data(janela)
             self.entity.inventariar()
             self.service.save_or_update(self.entity)
-            self.limpa_dados(janela, True, f'Bem {self.entity.get_numero_bem()} Inventariado')
+
+            # if self.entity.get_numero_bemant() not in [0, None]:
+            if self.entity.get_status_numerico() == Status.BensStatus.Numero_Trocado:
+                self.limpa_dados(janela, True, f'Bem {self.entity.get_numero_bemant()} trocado por {self.entity.get_numero_bem()}')
+            else:
+                self.limpa_dados(janela, True, f'Bem {self.entity.get_numero_bem()} Inventariado')
 
     # TODO: Limpar Dados e Cancelar Inventário dos Bens Novos
     def botao_cancelar(self, janela, id):
@@ -264,15 +269,17 @@ class JanelaInventario:
                                                    Status.BensStatus.Pendente]:
                 sg.Popup(f'O Bem {id} ainda não foi Inventariado!')
             else:
-                if self.entity.get_status_numerico() == Status.BensStatus.Inventariado:
+                if self.entity.get_status_numerico() in [Status.BensStatus.Inventariado,
+                                                        Status.BensStatus.Numero_Trocado]:
                     self.entity.cancelar_inventario()
                     self.service.cancelar(self.entity)
-                    # self.update_form_data(janela, id)
+
                     # Se tiver número anterior, faz a troca
-                    if self.entity.get_numero_bemant() != 0 and self.entity.get_numero_bemant() is not None:
+                    if self.entity.get_numero_bemant() not in [0, None]:
                         self.entity.set_numero_bem(self.entity.get_numero_bemant())
                         self.entity.set_numero_bemant(0)
                         id = self.entity.get_numero_bem()
+
                     self.update_form_data(janela, id)
 
                 elif self.entity.get_status_numerico() == Status.BensStatus.Novo:
@@ -300,3 +307,4 @@ class JanelaInventario:
     def troca_numero(self, numero_atual, numero_novo):
         self.entity.set_numero_bem(numero_novo)
         self.entity.set_numero_bemant(numero_atual)
+

@@ -15,7 +15,10 @@ class BensService:
             self._dao.insert(obj)
         else:
             if obj.get_status_numerico() == BensStatus.Pendente:
-                obj.set_status(BensStatus.Inventariado)
+                if obj.get_numero_bemant() not in [0, None]:
+                    obj.set_status(BensStatus.Numero_Trocado)
+                else:
+                    obj.set_status(BensStatus.Inventariado)
             self._dao.update(obj)
 
     def cancelar(self, obj):
