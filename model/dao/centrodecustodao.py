@@ -32,6 +32,10 @@ class CentroDeCustoDao(ABC):
         pass
 
     @abstractmethod
+    def get_total_bens(self, id, status_bem):
+        pass
+
+    @abstractmethod
     def altera_status_ccusto_ativo(self):
         pass
 

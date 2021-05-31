@@ -5,6 +5,7 @@ import pandas as pd
 from model.entities.centrodecusto import CentroDeCusto
 from model.dao.centrodecustodao import CentroDeCustoDao
 from model.entities.enum.ccusto_status import CcustoStatus
+from model.entities.enum.bens_status import BensStatus
 
 
 class CentroDeCustoDaoSqLite(CentroDeCustoDao):
@@ -140,6 +141,23 @@ class CentroDeCustoDaoSqLite(CentroDeCustoDao):
         except sqlite3.Error as erro:
             raise ValueError('Erro ao encontrar todos os Centro de Custo: ', erro)
 
+    def get_total_bens(self, id, status_bem):
+
+        cursor = self._banco.cursor()
+
+        try:
+
+            str_sql = f"SELECT COUNT(*) as QTDE FROM BENS WHERE CCUSTO_ID = {id} AND STATUS = {status_bem}"
+
+            cursor.execute(str_sql)
+
+            lista = cursor.fetchall()
+
+            return lista[0][0]
+
+        except sqlite3.Error as erro:
+            raise ValueError('Erro ao encontrar bens do Centro de Custo: ', erro)
+
     def altera_status_ccusto_ativo(self):
 
         cursor = self._banco.cursor()
@@ -163,9 +181,14 @@ class CentroDeCustoDaoSqLite(CentroDeCustoDao):
         self.ccustos_temp.set_status(int(lista[2]))
         self.ccustos_temp.set_data_inicio(lista[3])
         self.ccustos_temp.set_data_fim(lista[4])
-        self.ccustos_temp.set_pendentes(int(lista[5]))
-        self.ccustos_temp.set_inventariados(int(lista[6]))
-        self.ccustos_temp.set_novos(int(lista[7]))
+        # self.ccustos_temp.set_pendentes(int(lista[5]))
+        self.ccustos_temp.set_pendentes(self.get_total_bens(self.ccustos_temp.get_ccusto_id(), BensStatus.Pendente))
+        # self.ccustos_temp.set_inventariados(int(lista[6]))
+        self.ccustos_temp.set_inventariados(self.get_total_bens(self.ccustos_temp.get_ccusto_id(),
+                                                                BensStatus.Inventariado))
+        # self.ccustos_temp.set_novos(int(lista[7]))
+        self.ccustos_temp.set_novos(self.get_total_bens(self.ccustos_temp.get_ccusto_id(), BensStatus.Novo))
+
         return self.ccustos_temp
 
     def carrega_csv(self, path):

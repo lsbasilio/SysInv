@@ -146,6 +146,7 @@ class JanelaInventario:
 
     # TODO: Limpar os Dados do Bem
     def limpa_dados(self, janela, limpa_numero_bem=False, txtstatus=''):
+
         # Numero do Bem
         if limpa_numero_bem:
             janela.FindElement('numero_bem').Update('')
